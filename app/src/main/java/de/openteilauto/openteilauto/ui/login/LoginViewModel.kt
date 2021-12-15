@@ -1,4 +1,4 @@
-package de.openteilauto.openteilauto
+package de.openteilauto.openteilauto.ui.login
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,8 +11,8 @@ import retrofit2.HttpException
 
 class LoginViewModel : ViewModel() {
 
-    val loggedInUser: MutableLiveData<User?> = MutableLiveData(null)
-    val loginError: MutableLiveData<Error?> = MutableLiveData(null)
+    val loggedInUser: MutableLiveData<User?> = MutableLiveData()
+    val loginError: MutableLiveData<Error?> = MutableLiveData()
 
     fun login(membershipNo: String, password: String) {
         viewModelScope.launch {

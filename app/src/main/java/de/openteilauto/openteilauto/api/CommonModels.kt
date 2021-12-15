@@ -8,6 +8,7 @@ data class ErrorResponse(
     val errorMessageRegex: String
 )
 
-data class Config(
-    val noPoolOccupancy: String
+data class GeoPos(
+    val lon: String,
+    val lat: String
 )
