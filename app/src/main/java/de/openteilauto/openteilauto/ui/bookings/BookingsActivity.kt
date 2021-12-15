@@ -7,7 +7,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.RecyclerView
 import de.openteilauto.openteilauto.R
+import de.openteilauto.openteilauto.model.Booking
 import de.openteilauto.openteilauto.ui.login.LoginActivity
 
 class BookingsActivity : AppCompatActivity() {
@@ -15,10 +17,14 @@ class BookingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bookings)
 
+        val bookingsAdapter = BookingsAdapter { booking -> adapterOnClick(booking) }
+
+        val bookingsView: RecyclerView = findViewById(R.id.bookings_view)
+        bookingsView.adapter = bookingsAdapter
+
         val model: BookingsViewModel by viewModels()
         model.getBookings().observe(this, { bookings ->
-            val textView = findViewById<TextView>(R.id.textView)
-            textView.text = bookings.toString()
+            bookingsAdapter.submitList(bookings)
         })
 
         model.isNotLoggedIn().observe(this, { notLoggedIn ->
@@ -33,5 +39,9 @@ class BookingsActivity : AppCompatActivity() {
                 Toast.makeText(this, error.message, Toast.LENGTH_LONG).show()
             }
         })
+    }
+
+    private fun adapterOnClick(booking: Booking) {
+        Toast.makeText(this, booking.title, Toast.LENGTH_SHORT).show()
     }
 }
