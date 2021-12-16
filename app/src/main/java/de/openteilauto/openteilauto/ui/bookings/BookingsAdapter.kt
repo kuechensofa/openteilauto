@@ -29,7 +29,7 @@ class BookingsAdapter(private val onClick: (Booking) -> Unit) :
         fun bind(booking: Booking) {
             currentBooking = booking
 
-            bookingTextView.text = booking.title
+            bookingTextView.text = booking.vehicle.title
         }
     }
 

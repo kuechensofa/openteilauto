@@ -1,5 +1,5 @@
 package de.openteilauto.openteilauto.model
 
-data class Error(
+data class AppError(
     val message: String
 )

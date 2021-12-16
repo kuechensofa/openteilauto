@@ -49,6 +49,7 @@ dependencies {
     implementation 'com.amitshekhar.android:android-networking:1.0.2'
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
     // Retrofit with Moshi Converter
     implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
     // Moshi

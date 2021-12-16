@@ -1,28 +1,31 @@
 package de.openteilauto.openteilauto.ui.login
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.openteilauto.openteilauto.api.TeilautoApi
-import de.openteilauto.openteilauto.model.Error
+import de.openteilauto.openteilauto.model.AppError
 import de.openteilauto.openteilauto.model.User
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     val loggedInUser: MutableLiveData<User?> = MutableLiveData()
-    val loginError: MutableLiveData<Error?> = MutableLiveData()
+    val loginError: MutableLiveData<AppError?> = MutableLiveData()
 
     fun login(membershipNo: String, password: String) {
         viewModelScope.launch {
             try {
+                val timestamp = System.currentTimeMillis().toString()
                 val fieldMap = mapOf("password" to password,
                     "membershipNo" to membershipNo, "rememberMe" to "true",
-                    "requestTimestamp" to "1639351101910", "driveMode" to "tA",
+                    "requestTimestamp" to timestamp, "driveMode" to "tA",
                     "platform" to "ios", "pg" to "pg", "version" to "22748", "tracking" to "off")
 
-                val response = TeilautoApi.teilautoService.login(fieldMap)
+                val response = TeilautoApi.getInstance((getApplication() as Application)
+                    .applicationContext).login(fieldMap)
 
                 when {
                     response.login.data != null -> {
@@ -32,16 +35,16 @@ class LoginViewModel : ViewModel() {
                         loggedInUser.postValue(user)
                     }
                     response.error != null -> {
-                        val error = Error(response.error.message)
+                        val error = AppError(response.error.message)
                         loginError.postValue(error)
                     }
                     else -> {
-                        val error = Error("Unknown login error")
+                        val error = AppError("Unknown login error")
                         loginError.postValue(error)
                     }
                 }
             } catch (e: HttpException) {
-                loginError.postValue(Error("Login failed!"))
+                loginError.postValue(AppError("Login failed!"))
             }
         }
     }

@@ -18,10 +18,6 @@ data class Booking(
     val begin: Long,
     val end: Long,
     val vehicle: Vehicle,
-    val station: Station,
-    val driveMode: String,
-    val title: String,
-    val extension: BookingExtension,
     val startingPoint: Station,
     val destination: Station,
     val bookingText: String,
@@ -29,11 +25,12 @@ data class Booking(
     val showBookingTextInvoice: Boolean,
     val membershipCardUID: String,
     val bookingUID: String,
-    @Json(name = "PetrolCardObject") val petrolCardObject: PetrolCard?,
+    @Json(name = "PetrolCardObject") val petrolCardObject: PetrolCardObject?,
     val needPetrolCard: Boolean,
     val isRunning: Boolean,
     val hasVehicleLockControl: Boolean,
-    val timeBoundaries: TimeBoundaries
+    val timeBoundaries: TimeBoundaries,
+    val extension: BookingExtension
 )
 
 data class Vehicle(
@@ -44,17 +41,21 @@ data class Vehicle(
     val vehicleUID: String,
     val rentalObjectID: String,
     val showType: String,
-    val additionalInfo: VehicleAdditionalInfo
+    val additionalInfo: VehicleAdditionalInfo,
+    val station: Station,
+    val driveMode: String,
+    val title: String,
+    val mileage: Mileage?,
 )
 
 data class VehicleAdditionalInfo(
-    val seats: Int,
-    val doors: Int,
-    val colour: String,
-    val fuelType: String,
-    val changeLevel: Int,
-    val chargeStatus: String,
-    val fuelCategory: String
+    val seats: Int?,
+    val doors: Int?,
+    val colour: String?,
+    val fuelType: String?,
+    val changeLevel: Int?,
+    val chargeStatus: String?,
+    val fuelCategory: String?
 )
 
 data class Station(
@@ -77,8 +78,16 @@ data class BookingKind(
     val ongoing: Boolean
 )
 
+data class PetrolCardObject(
+    val petrolCard: PetrolCard
+)
+
 data class PetrolCard(
-    val uid: String?
+    val uid: String,
+    val number: String,
+    val pin: String,
+    val description: String,
+    val cardUID: String
 )
 
 data class TimeBoundaries(
@@ -86,4 +95,9 @@ data class TimeBoundaries(
     val minBegin: Int,
     val maxEnd: Int,
     val minEnd: Int
+)
+
+data class Mileage(
+    val distance: String,
+    val unit: String
 )

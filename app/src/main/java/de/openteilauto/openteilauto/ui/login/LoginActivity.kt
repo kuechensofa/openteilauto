@@ -7,30 +7,33 @@ import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.lifecycle.ViewModelProvider
 import de.openteilauto.openteilauto.R
 import de.openteilauto.openteilauto.ui.bookings.BookingsActivity
 
 class LoginActivity : AppCompatActivity() {
-    private val model: LoginViewModel by viewModels()
+    private var model: LoginViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        model.loggedInUser.observe(this, { user ->
-                if (user != null) {
-                    Toast.makeText(this, "Hello ${user.firstname} ${user.lastname}!",
-                                Toast.LENGTH_SHORT).show()
-                    val bookingsIntent = Intent(this, BookingsActivity::class.java)
-                    startActivity(bookingsIntent)
-                }
-            })
+        model = ViewModelProvider(this)[LoginViewModel::class.java]
 
-        model.loginError.observe(this, { error ->
-                    if (error != null) {
-                        Toast.makeText(this, error.message, Toast.LENGTH_LONG).show()
-                    }
-            })
+        model?.loggedInUser?.observe(this, { user ->
+            if (user != null) {
+                Toast.makeText(this, "Hello ${user.firstname} ${user.lastname}!",
+                    Toast.LENGTH_SHORT).show()
+                val bookingsIntent = Intent(this, BookingsActivity::class.java)
+                startActivity(bookingsIntent)
+            }
+        })
+
+        model?.loginError?.observe(this, { error ->
+            if (error != null) {
+                Toast.makeText(this, error.message, Toast.LENGTH_LONG).show()
+            }
+        })
     }
 
     fun login(view: View) {
@@ -40,6 +43,6 @@ class LoginActivity : AppCompatActivity() {
         val membershipNo = editMembershipNo.text.toString()
         val password = editPassword.text.toString()
 
-        model.login(membershipNo, password)
+        model?.login(membershipNo, password)
     }
 }

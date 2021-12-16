@@ -7,6 +7,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import de.openteilauto.openteilauto.R
 import de.openteilauto.openteilauto.model.Booking
@@ -22,7 +23,7 @@ class BookingsActivity : AppCompatActivity() {
         val bookingsView: RecyclerView = findViewById(R.id.bookings_view)
         bookingsView.adapter = bookingsAdapter
 
-        val model: BookingsViewModel by viewModels()
+        val model = ViewModelProvider(this)[BookingsViewModel::class.java]
         model.getBookings().observe(this, { bookings ->
             bookingsAdapter.submitList(bookings)
         })
@@ -42,6 +43,6 @@ class BookingsActivity : AppCompatActivity() {
     }
 
     private fun adapterOnClick(booking: Booking) {
-        Toast.makeText(this, booking.title, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, booking.vehicle.title, Toast.LENGTH_SHORT).show()
     }
 }
