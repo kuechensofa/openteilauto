@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OpenTeilauto">
         <activity
+            android:name=".ui.bookings.BookingsDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.bookings.BookingsActivity"
             android:exported="true">
             <intent-filter>
@@ -22,8 +25,7 @@
         </activity>
         <activity
             android:name=".ui.login.LoginActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false"></activity>
     </application>
 
 </manifest>

@@ -3,10 +3,7 @@ package de.openteilauto.openteilauto.ui.bookings
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import de.openteilauto.openteilauto.R
@@ -44,5 +41,9 @@ class BookingsActivity : AppCompatActivity() {
 
     private fun adapterOnClick(booking: Booking) {
         Toast.makeText(this, booking.vehicle.title, Toast.LENGTH_SHORT).show()
+        val intent = Intent(this, BookingsDetailActivity::class.java).apply {
+            putExtra(BOOKING_UID, booking.uid)
+        }
+        startActivity(intent)
     }
 }

@@ -3,4 +3,9 @@
     <string name="prompt_membership_no">Membership No</string>
     <string name="prompt_password">Password</string>
     <string name="button_login">Login</string>
+    <string name="begin_label">Begin</string>
+    <string name="end_label">End</string>
+    <string name="station_label">Station</string>
+    <string name="button_lock">Lock</string>
+    <string name="button_unlock">Unlock</string>
 </resources>

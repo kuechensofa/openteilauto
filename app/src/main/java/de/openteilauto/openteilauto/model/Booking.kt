@@ -1,5 +1,6 @@
 package de.openteilauto.openteilauto.model
 
+import android.net.Uri
 import java.util.*
 
 data class Booking(
@@ -13,8 +14,8 @@ data class Booking(
 ) {
     companion object {
         fun fromReceivedBooking(receivedBooking: de.openteilauto.openteilauto.api.Booking): Booking {
-            val begin = Date(receivedBooking.begin)
-            val end = Date(receivedBooking.end)
+            val begin = Date(receivedBooking.begin * 1000)
+            val end = Date(receivedBooking.end * 1000)
             val vehicle = Vehicle.fromReceivedVehicle(receivedBooking.vehicle)
 
 
@@ -34,6 +35,10 @@ data class Booking(
                 destination)
         }
     }
+
+    fun isCurrent(currentTime: Date): Boolean {
+        return currentTime in begin..end
+    }
 }
 
 data class Vehicle(
@@ -43,14 +48,16 @@ data class Vehicle(
     val model: String,
     val brand: String,
     val station: Station,
-    val title: String
+    val title: String,
+    val imageUrl: Uri
 ) {
     companion object {
         fun fromReceivedVehicle(receivedVehicle: de.openteilauto.openteilauto.api.Vehicle): Vehicle {
             val station = Station.fromReceivedStation(receivedVehicle.station)
+            val imageUrl = Uri.parse(receivedVehicle.imagePath)
             return Vehicle(receivedVehicle.vehicleUID, receivedVehicle.name,
                 receivedVehicle.licensePlate, receivedVehicle.model, receivedVehicle.brand,
-                station, receivedVehicle.title)
+                station, receivedVehicle.title, imageUrl)
         }
     }
 }

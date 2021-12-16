@@ -46,6 +46,7 @@ data class Vehicle(
     val driveMode: String,
     val title: String,
     val mileage: Mileage?,
+    val imagePath: String
 )
 
 data class VehicleAdditionalInfo(

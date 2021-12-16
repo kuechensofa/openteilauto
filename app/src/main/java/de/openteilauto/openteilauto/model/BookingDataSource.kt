@@ -1,12 +1,14 @@
 package de.openteilauto.openteilauto.model
 
 import android.content.Context
+import android.net.Uri
 import de.openteilauto.openteilauto.api.TeilautoApi
 import retrofit2.HttpException
 import java.util.*
 
 interface BookingDataSource {
     suspend fun getBookings(): List<Booking>
+    suspend fun getBooking(bookingUID: String): Booking?
 }
 
 class MockBookingDataSource : BookingDataSource {
@@ -17,7 +19,7 @@ class MockBookingDataSource : BookingDataSource {
             GeoPos("1", "1")
         )
         val vehicle = Vehicle("1", "Test Auto", "A-BC-123", "Test Model",
-            "Test Brand", station, "Test Auto")
+            "Test Brand", station, "Test Auto", Uri.EMPTY)
         val petrolCard = PetrolCard("1", "1234-5678-9012-3456", "1234",
             "Test Card", "1")
         val begin1 = Date(2021, 12, 1, 12, 0)
@@ -32,6 +34,16 @@ class MockBookingDataSource : BookingDataSource {
 
     override suspend fun getBookings(): List<Booking> {
         return bookings
+    }
+
+    override suspend fun getBooking(bookingUID: String): Booking? {
+        val bookings = getBookings()
+        for (booking in bookings) {
+            if (booking.uid == bookingUID) {
+                return booking
+            }
+        }
+        return null
     }
 }
 
@@ -64,6 +76,16 @@ class NetworkBookingDataSource(private val context: Context) : BookingDataSource
         } catch (e: HttpException) {
             throw ApiException("Server Error!")
         }
+    }
+
+    override suspend fun getBooking(bookingUID: String): Booking? {
+        val bookings = getBookings()
+        for (booking in bookings) {
+            if (booking.uid == bookingUID) {
+                return booking
+            }
+        }
+        return null
     }
 
     private fun transformBookings(receivedBookings: List<de.openteilauto.openteilauto.api.Booking?>)
