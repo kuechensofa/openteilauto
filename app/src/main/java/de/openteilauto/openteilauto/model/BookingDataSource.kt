@@ -1,15 +1,14 @@
 package de.openteilauto.openteilauto.model
 
 import android.content.Context
-import android.net.Uri
 import de.openteilauto.openteilauto.api.TeilautoApi
 import retrofit2.HttpException
-import java.util.*
 
 interface BookingDataSource {
     suspend fun getBookings(): List<Booking>
     suspend fun getBooking(bookingUID: String): Booking?
     suspend fun unlockVehicle(bookingUID: String, appPIN: String): Boolean
+    suspend fun lockVehicle(bookingUID: String): Boolean
 }
 
 class NetworkBookingDataSource(private val context: Context) : BookingDataSource {
@@ -72,6 +71,34 @@ class NetworkBookingDataSource(private val context: Context) : BookingDataSource
                 }
                 response.unlockVehicle?.data != null -> {
                     return response.unlockVehicle.data.successful
+                }
+                response.error != null -> {
+                    throw ApiException(response.error.message)
+                }
+                else -> {
+                    throw ApiException("Unknown error")
+                }
+            }
+        } catch (e: HttpException) {
+            throw ApiException("Server Error!")
+        }
+    }
+
+    override suspend fun lockVehicle(bookingUID: String): Boolean {
+        try {
+            val timestamp = System.currentTimeMillis().toString()
+            val fieldMap = mapOf("bookingUID" to bookingUID,
+                "requestTimestamp" to timestamp, "driveMode" to "tA",
+                "platform" to "ios", "pg" to "pg", "version" to "22748",
+                "tracking" to "off")
+            val response = TeilautoApi.getInstance(context).lockVehicle(fieldMap)
+
+            when {
+                !response.hasValidIdentity -> {
+                    throw NotLoggedInException()
+                }
+                response.lockVehicle?.data != null -> {
+                    return response.lockVehicle.data.successful
                 }
                 response.error != null -> {
                     throw ApiException(response.error.message)

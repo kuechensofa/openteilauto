@@ -30,6 +30,10 @@ interface TeilautoApiService {
     @FormUrlEncoded
     @POST("unlockVehicle")
     suspend fun unlockVehicle(@FieldMap(encoded = true) unlockRequestBody: Map<String, String>): UnlockResponse
+
+    @FormUrlEncoded
+    @POST("lockVehicle")
+    suspend fun lockVehicle(@FieldMap(encoded = true) lockRequestBody: Map<String, String>): LockResponse
 }
 
 class TeilautoApi {

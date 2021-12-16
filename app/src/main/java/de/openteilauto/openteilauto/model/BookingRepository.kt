@@ -12,4 +12,8 @@ class BookingRepository(private val bookingDataSource: BookingDataSource) {
     suspend fun unlockVehicle(bookingUID: String, pin: String): Boolean {
         return bookingDataSource.unlockVehicle(bookingUID, pin)
     }
+
+    suspend fun lockVehicle(bookingUID: String): Boolean {
+        return bookingDataSource.lockVehicle(bookingUID)
+    }
 }

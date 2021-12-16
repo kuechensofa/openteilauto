@@ -42,7 +42,7 @@ class BookingsDetailActivity : AppCompatActivity() {
         val lockButton = findViewById<Button>(R.id.button_lock)
 
         unlockButton.setOnClickListener {
-            buildPinDialog(it)
+            showPinDialog(it)
         }
 
         val dateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm")
@@ -50,6 +50,11 @@ class BookingsDetailActivity : AppCompatActivity() {
         if (bookingUID != null) {
             val factory = BookingsDetailViewModelFactory(application, bookingUID)
             model = ViewModelProvider(this, factory)[BookingsDetailViewModel::class.java]
+
+            lockButton.setOnClickListener {
+                model?.lockVehicle()
+            }
+
             model?.getBooking()?.observe(this, { booking ->
                 bookingTitle.text = booking.vehicle.title
                 beginText.text = dateFormat.format(booking.begin)
@@ -73,6 +78,14 @@ class BookingsDetailActivity : AppCompatActivity() {
                 }
             })
 
+            model?.isLockSuccessful()?.observe(this, { isSuccessful ->
+                if (isSuccessful) {
+                    Toast.makeText(this, "Successfully locked car", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Lock wasn't successful", Toast.LENGTH_SHORT).show()
+                }
+            })
+
             model?.getError()?.observe(this, { error ->
                 if (error != null) {
                     Toast.makeText(this, error.message, Toast.LENGTH_SHORT).show()
@@ -88,7 +101,7 @@ class BookingsDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun buildPinDialog(view: View) {
+    private fun showPinDialog(view: View) {
         val builder: AlertDialog.Builder = this.let {
             AlertDialog.Builder(it)
         }
