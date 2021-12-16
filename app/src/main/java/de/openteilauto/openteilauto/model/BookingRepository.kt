@@ -8,4 +8,8 @@ class BookingRepository(private val bookingDataSource: BookingDataSource) {
     suspend fun getBooking(bookingUID: String): Booking? {
         return bookingDataSource.getBooking(bookingUID)
     }
+
+    suspend fun unlockVehicle(bookingUID: String, pin: String): Boolean {
+        return bookingDataSource.unlockVehicle(bookingUID, pin)
+    }
 }

@@ -9,42 +9,7 @@ import java.util.*
 interface BookingDataSource {
     suspend fun getBookings(): List<Booking>
     suspend fun getBooking(bookingUID: String): Booking?
-}
-
-class MockBookingDataSource : BookingDataSource {
-    private val bookings: List<Booking>
-
-    init {
-        val station = Station(1, "Test Station", "Test", true,
-            GeoPos("1", "1")
-        )
-        val vehicle = Vehicle("1", "Test Auto", "A-BC-123", "Test Model",
-            "Test Brand", station, "Test Auto", Uri.EMPTY)
-        val petrolCard = PetrolCard("1", "1234-5678-9012-3456", "1234",
-            "Test Card", "1")
-        val begin1 = Date(2021, 12, 1, 12, 0)
-        val end1 = Date(2021, 12, 1, 14, 0)
-        val begin2 = Date(2021, 12, 3, 10, 0)
-        val end2 = Date(2021, 12, 3, 15, 30)
-
-        bookings = listOf(
-            Booking("1", begin1, end1, vehicle, petrolCard, station, station),
-            Booking("2", begin2, end2, vehicle, null, station, station))
-    }
-
-    override suspend fun getBookings(): List<Booking> {
-        return bookings
-    }
-
-    override suspend fun getBooking(bookingUID: String): Booking? {
-        val bookings = getBookings()
-        for (booking in bookings) {
-            if (booking.uid == bookingUID) {
-                return booking
-            }
-        }
-        return null
-    }
+    suspend fun unlockVehicle(bookingUID: String, appPIN: String): Boolean
 }
 
 class NetworkBookingDataSource(private val context: Context) : BookingDataSource {
@@ -67,7 +32,11 @@ class NetworkBookingDataSource(private val context: Context) : BookingDataSource
                     return transformBookings(response.listMyBookings.data)
                 }
                 response.error != null -> {
-                    throw ApiException(response.error.message)
+                    if (response.error.message != "") {
+                        throw ApiException(response.error.message)
+                    } else {
+                        throw ApiException("Unknown API error")
+                    }
                 }
                 else -> {
                     throw ApiException("Unknown error")
@@ -86,6 +55,34 @@ class NetworkBookingDataSource(private val context: Context) : BookingDataSource
             }
         }
         return null
+    }
+
+    override suspend fun unlockVehicle(bookingUID: String, appPIN: String): Boolean {
+        try {
+            val timestamp = System.currentTimeMillis().toString()
+            val fieldMap = mapOf("bookingUID" to bookingUID, "appPIN" to appPIN,
+                "requestTimestamp" to timestamp, "driveMode" to "tA",
+                "platform" to "ios", "pg" to "pg", "version" to "22748",
+                "tracking" to "off")
+            val response = TeilautoApi.getInstance(context).unlockVehicle(fieldMap)
+
+            when {
+                !response.hasValidIdentity -> {
+                    throw NotLoggedInException()
+                }
+                response.unlockVehicle?.data != null -> {
+                    return response.unlockVehicle.data.successful
+                }
+                response.error != null -> {
+                    throw ApiException(response.error.message)
+                }
+                else -> {
+                    throw ApiException("Unknown error")
+                }
+            }
+        } catch (e: HttpException) {
+            throw ApiException("Server Error!")
+        }
     }
 
     private fun transformBookings(receivedBookings: List<de.openteilauto.openteilauto.api.Booking?>)

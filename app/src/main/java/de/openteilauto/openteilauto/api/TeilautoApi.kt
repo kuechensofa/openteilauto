@@ -26,6 +26,10 @@ interface TeilautoApiService {
     @FormUrlEncoded
     @POST("listMyBookings")
     suspend fun getBookings(@FieldMap(encoded = true) bookingsRequestBody: Map<String, String>): BookingsResponse
+
+    @FormUrlEncoded
+    @POST("unlockVehicle")
+    suspend fun unlockVehicle(@FieldMap(encoded = true) unlockRequestBody: Map<String, String>): UnlockResponse
 }
 
 class TeilautoApi {

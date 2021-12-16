@@ -5,7 +5,7 @@ import androidx.lifecycle.*
 import de.openteilauto.openteilauto.model.*
 import kotlinx.coroutines.launch
 
-class BookingsDetailViewModel(application: Application, bookingUID: String)
+class BookingsDetailViewModel(application: Application, private val bookingUID: String)
         : AndroidViewModel(application) {
     private val repository =
         BookingRepository(NetworkBookingDataSource(application.applicationContext))
@@ -18,9 +18,35 @@ class BookingsDetailViewModel(application: Application, bookingUID: String)
 
     private val error: MutableLiveData<AppError?> = MutableLiveData()
     private val notLoggedIn: MutableLiveData<Boolean> = MutableLiveData(false)
+    private val unlockSuccessful: MutableLiveData<Boolean> = MutableLiveData()
 
     fun getBooking(): LiveData<Booking> {
         return booking
+    }
+
+    fun getError(): LiveData<AppError?> {
+        return error
+    }
+
+    fun getNotLoggedIn(): LiveData<Boolean> {
+        return notLoggedIn
+    }
+
+    fun isUnlockSuccessful(): LiveData<Boolean> {
+        return unlockSuccessful
+    }
+
+    fun unlockVehicle(pin: String) {
+        viewModelScope.launch {
+            try {
+                val unlockSuccessfulResponse = repository.unlockVehicle(bookingUID, pin)
+                unlockSuccessful.postValue(unlockSuccessfulResponse)
+            } catch (e: NotLoggedInException) {
+                notLoggedIn.postValue(true)
+            } catch (e: ApiException) {
+                error.postValue(AppError(e.message?: ""))
+            }
+        }
     }
 
     private fun loadBooking(bookingUID: String) {

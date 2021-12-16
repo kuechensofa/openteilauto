@@ -8,4 +8,9 @@
     <string name="station_label">Station</string>
     <string name="button_lock">Lock</string>
     <string name="button_unlock">Unlock</string>
+    <string name="enter_pin_message">Enter your PIN</string>
+    <string name="enter_pin_title">Enter PIN</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="pin_hint">Unlock PIN</string>
 </resources>
