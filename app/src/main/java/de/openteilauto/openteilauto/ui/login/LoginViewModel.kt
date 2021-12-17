@@ -4,11 +4,13 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import de.openteilauto.openteilauto.R
 import de.openteilauto.openteilauto.api.TeilautoApi
 import de.openteilauto.openteilauto.model.AppError
 import de.openteilauto.openteilauto.model.User
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import java.net.SocketTimeoutException
 
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -39,12 +41,17 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                         loginError.postValue(error)
                     }
                     else -> {
-                        val error = AppError("Unknown login error")
+                        val error = AppError((getApplication() as Application)
+                            .resources.getString(R.string.unknown_login_error))
                         loginError.postValue(error)
                     }
                 }
             } catch (e: HttpException) {
-                loginError.postValue(AppError("Login failed!"))
+                loginError.postValue(AppError((getApplication() as Application)
+                    .resources.getString(R.string.login_failed)))
+            } catch (e: SocketTimeoutException) {
+                loginError.postValue(AppError((getApplication() as Application)
+                    .resources.getString(R.string.network_error)))
             }
         }
     }

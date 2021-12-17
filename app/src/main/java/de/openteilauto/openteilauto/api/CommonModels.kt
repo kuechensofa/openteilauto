@@ -6,7 +6,7 @@ data class ErrorResponse(
     val name: String,
     val hal2IDS: List<String>,
     val errorMessageRegex: String,
-    val extra: ErrorExtra
+    val extra: ErrorExtra?
 )
 
 data class ErrorExtra(

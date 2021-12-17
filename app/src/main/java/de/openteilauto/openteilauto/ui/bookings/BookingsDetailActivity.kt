@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import de.openteilauto.openteilauto.R
 import de.openteilauto.openteilauto.ui.login.LoginActivity
 import java.text.SimpleDateFormat
@@ -25,6 +26,8 @@ class BookingsDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bookings_detail)
+
+        setTitle(R.string.booking_detail_title)
 
         var bookingUID: String? = null
 
@@ -48,6 +51,8 @@ class BookingsDetailActivity : AppCompatActivity() {
         val dateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm")
 
         if (bookingUID != null) {
+            val refreshLayout = findViewById<SwipeRefreshLayout>(R.id.booking_detail_swipe_refresh)
+
             val factory = BookingsDetailViewModelFactory(application, bookingUID)
             model = ViewModelProvider(this, factory)[BookingsDetailViewModel::class.java]
 
@@ -68,6 +73,7 @@ class BookingsDetailActivity : AppCompatActivity() {
                     unlockButton.visibility = View.INVISIBLE
                     lockButton.visibility = View.INVISIBLE
                 }
+                refreshLayout.isRefreshing = false
             })
 
             model?.isUnlockSuccessful()?.observe(this, { isSuccessful ->
@@ -90,6 +96,7 @@ class BookingsDetailActivity : AppCompatActivity() {
                 if (error != null) {
                     Toast.makeText(this, error.message, Toast.LENGTH_SHORT).show()
                 }
+                refreshLayout.isRefreshing = false
             })
 
             model?.getNotLoggedIn()?.observe(this, { notLoggedIn ->
@@ -97,7 +104,12 @@ class BookingsDetailActivity : AppCompatActivity() {
                     val intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent)
                 }
+                refreshLayout.isRefreshing = false
             })
+
+            refreshLayout.setOnRefreshListener {
+                model?.refreshBooking()
+            }
         }
     }
 

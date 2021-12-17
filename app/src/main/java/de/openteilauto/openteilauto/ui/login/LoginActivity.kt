@@ -18,11 +18,14 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        setTitle(R.string.login_title)
+
         model = ViewModelProvider(this)[LoginViewModel::class.java]
 
         model?.loggedInUser?.observe(this, { user ->
             if (user != null) {
-                Toast.makeText(this, "Hello ${user.firstname} ${user.lastname}!",
+                Toast.makeText(this,
+                    resources.getString(R.string.login_welcome, user.firstname, user.lastname),
                     Toast.LENGTH_SHORT).show()
                 val bookingsIntent = Intent(this, BookingsActivity::class.java)
                 startActivity(bookingsIntent)

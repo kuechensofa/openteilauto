@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import de.openteilauto.openteilauto.R
 import de.openteilauto.openteilauto.model.Booking
+import java.text.SimpleDateFormat
 
 class BookingsAdapter(private val onClick: (Booking) -> Unit) :
     ListAdapter<Booking, BookingsAdapter.BookingViewHolder>(BookingDiffCallback) {
@@ -16,6 +17,8 @@ class BookingsAdapter(private val onClick: (Booking) -> Unit) :
     class BookingViewHolder(itemView: View, onClick: (Booking) -> Unit) :
         RecyclerView.ViewHolder(itemView) {
         private val bookingTextView: TextView = itemView.findViewById(R.id.booking_text)
+        private val bookingTimeTextView: TextView = itemView.findViewById(R.id.booking_time_text)
+        private val bookingStationTextView: TextView = itemView.findViewById(R.id.booking_station_text)
         private var currentBooking: Booking? = null
 
         init {
@@ -30,6 +33,12 @@ class BookingsAdapter(private val onClick: (Booking) -> Unit) :
             currentBooking = booking
 
             bookingTextView.text = booking.vehicle.title
+            val dateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm")
+            bookingTimeTextView.text =
+                itemView.resources.getString(R.string.booking_time,
+                    dateFormat.format(booking.begin), dateFormat.format(booking.end))
+
+            bookingStationTextView.text = booking.startingPoint.name
         }
     }
 

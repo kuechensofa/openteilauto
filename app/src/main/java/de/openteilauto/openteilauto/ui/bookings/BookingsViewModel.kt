@@ -28,6 +28,10 @@ class BookingsViewModel(application: Application) : AndroidViewModel(application
         return notLoggedIn
     }
 
+    fun refreshBookings() {
+        loadBookings()
+    }
+
     private fun loadBookings() {
         viewModelScope.launch {
             try {

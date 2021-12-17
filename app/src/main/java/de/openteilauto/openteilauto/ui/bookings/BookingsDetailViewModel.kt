@@ -67,6 +67,10 @@ class BookingsDetailViewModel(application: Application, private val bookingUID: 
         }
     }
 
+    fun refreshBooking() {
+        loadBooking(bookingUID)
+    }
+
     private fun loadBooking(bookingUID: String) {
         viewModelScope.launch {
             try {

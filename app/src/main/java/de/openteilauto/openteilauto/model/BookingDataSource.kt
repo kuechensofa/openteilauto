@@ -1,8 +1,10 @@
 package de.openteilauto.openteilauto.model
 
 import android.content.Context
+import de.openteilauto.openteilauto.R
 import de.openteilauto.openteilauto.api.TeilautoApi
 import retrofit2.HttpException
+import java.net.SocketTimeoutException
 
 interface BookingDataSource {
     suspend fun getBookings(): List<Booking>
@@ -34,15 +36,17 @@ class NetworkBookingDataSource(private val context: Context) : BookingDataSource
                     if (response.error.message != "") {
                         throw ApiException(response.error.message)
                     } else {
-                        throw ApiException("Unknown API error")
+                        throw ApiException(context.resources.getString(R.string.unknown_error))
                     }
                 }
                 else -> {
-                    throw ApiException("Unknown error")
+                    throw ApiException(context.resources.getString(R.string.unknown_error))
                 }
             }
         } catch (e: HttpException) {
-            throw ApiException("Server Error!")
+            throw ApiException(context.resources.getString(R.string.server_error))
+        } catch (e: SocketTimeoutException) {
+            throw ApiException(context.resources.getString(R.string.network_error))
         }
     }
 
@@ -76,11 +80,13 @@ class NetworkBookingDataSource(private val context: Context) : BookingDataSource
                     throw ApiException(response.error.message)
                 }
                 else -> {
-                    throw ApiException("Unknown error")
+                    throw ApiException(context.resources.getString(R.string.unknown_error))
                 }
             }
         } catch (e: HttpException) {
-            throw ApiException("Server Error!")
+            throw ApiException(context.resources.getString(R.string.server_error))
+        } catch (e: SocketTimeoutException) {
+            throw ApiException(context.resources.getString(R.string.network_error))
         }
     }
 
@@ -104,11 +110,13 @@ class NetworkBookingDataSource(private val context: Context) : BookingDataSource
                     throw ApiException(response.error.message)
                 }
                 else -> {
-                    throw ApiException("Unknown error")
+                    throw ApiException(context.resources.getString(R.string.unknown_error))
                 }
             }
         } catch (e: HttpException) {
-            throw ApiException("Server Error!")
+            throw ApiException(context.resources.getString(R.string.server_error))
+        } catch (e: SocketTimeoutException) {
+            throw ApiException(context.resources.getString(R.string.network_error))
         }
     }
 
