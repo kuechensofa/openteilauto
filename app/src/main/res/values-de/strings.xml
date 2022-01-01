@@ -7,8 +7,8 @@
     <string name="begin_label">Start</string>
     <string name="end_label">Ende</string>
     <string name="station_label">Station</string>
-    <string name="button_lock">Öffnen</string>
-    <string name="button_unlock">Schließen</string>
+    <string name="button_lock">Schließen</string>
+    <string name="button_unlock">Öffnen</string>
     <string name="enter_pin_message">Gebe deine PIN ein</string>
     <string name="enter_pin_title">PIN eingeben</string>
     <string name="ok">OK</string>
