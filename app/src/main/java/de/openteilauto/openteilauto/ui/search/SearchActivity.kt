@@ -12,8 +12,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.chip.Chip
 import de.openteilauto.openteilauto.R
 import de.openteilauto.openteilauto.model.GeoPos
+import de.openteilauto.openteilauto.model.VehicleClass
 import de.openteilauto.openteilauto.ui.login.LoginActivity
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -108,7 +110,7 @@ class SearchActivity : AppCompatActivity() {
                     "",
                     beginDateTime,
                     endDateTime,
-                    listOf(),
+                    getSelectedVehicleClasses(),
                     geoPos
                 )
             } else {
@@ -160,5 +162,52 @@ class SearchActivity : AppCompatActivity() {
 
         timeEdit.error = null
         return true
+    }
+
+    private fun getSelectedVehicleClasses(): List<VehicleClass> {
+        val selectedVehicleClasses: MutableList<VehicleClass> = mutableListOf()
+
+        val miniChip: Chip = findViewById(R.id.chip_mini)
+        val smallChip: Chip = findViewById(R.id.chip_small)
+        val deliveryVanChip: Chip = findViewById(R.id.chip_delivery_van)
+        val compactChip: Chip = findViewById(R.id.chip_compact)
+        val miniVanChip: Chip = findViewById(R.id.chip_mini_van)
+        val mediumSizedChip: Chip = findViewById(R.id.chip_medium_sized)
+        val transporterChip: Chip = findViewById(R.id.chip_transporter)
+        val busChip: Chip = findViewById(R.id.chip_bus)
+
+        if (miniChip.isChecked) {
+            selectedVehicleClasses.add(VehicleClass.MINI)
+        }
+
+        if (smallChip.isChecked) {
+            selectedVehicleClasses.add(VehicleClass.SMALL)
+        }
+
+        if (deliveryVanChip.isChecked) {
+            selectedVehicleClasses.add(VehicleClass.DELIVERY_VAN)
+        }
+
+        if (compactChip.isChecked) {
+            selectedVehicleClasses.add(VehicleClass.COMPACT)
+        }
+
+        if (miniVanChip.isChecked) {
+            selectedVehicleClasses.add(VehicleClass.MINI_VAN)
+        }
+
+        if (mediumSizedChip.isChecked) {
+            selectedVehicleClasses.add(VehicleClass.MEDIUM_SIZED)
+        }
+
+        if (transporterChip.isChecked) {
+            selectedVehicleClasses.add(VehicleClass.TRANSPORTER)
+        }
+
+        if (busChip.isChecked) {
+            selectedVehicleClasses.add(VehicleClass.BUS)
+        }
+
+        return selectedVehicleClasses.toList()
     }
 }

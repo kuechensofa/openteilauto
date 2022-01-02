@@ -47,4 +47,12 @@
     <string name="km_edit_label">KM</string>
     <string name="total_cost_label">Gesamtpreis</string>
     <string name="enter_valid_number">Gebe eine Zahl ein</string>
+    <string name="chip_mini_text">Minis</string>
+    <string name="chip_small_text">Kleine</string>
+    <string name="chip_delivery_van_text">Lieferwagen</string>
+    <string name="chip_compact_text">Kompakte</string>
+    <string name="chip_mini_van_text">Hochdachkombis</string>
+    <string name="chip_medium_sized_text">Mittelklasse</string>
+    <string name="chip_transporter_text">Transporter</string>
+    <string name="chip_bus_text">Busse</string>
 </resources>

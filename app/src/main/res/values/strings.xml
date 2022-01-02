@@ -46,4 +46,12 @@
     <string name="km_edit_label">KM</string>
     <string name="total_cost_label">Total costs</string>
     <string name="enter_valid_number">Enter a valid number</string>
+    <string name="chip_mini_text">Minis</string>
+    <string name="chip_small_text">Small</string>
+    <string name="chip_delivery_van_text">Delivery Vans</string>
+    <string name="chip_compact_text">Compacts</string>
+    <string name="chip_mini_van_text">Mini Vans</string>
+    <string name="chip_medium_sized_text">Medium Sized</string>
+    <string name="chip_transporter_text">Transporter</string>
+    <string name="chip_bus_text">Busses</string>
 </resources>

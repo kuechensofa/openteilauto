@@ -44,7 +44,7 @@
         android:text="@string/search_button_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/car_category_edit" />
+        app:layout_constraintTop_toBottomOf="@+id/chipGroup" />
 
     <EditText
         android:id="@+id/begin_time_edit"
@@ -76,21 +76,6 @@
         app:layout_constraintTop_toBottomOf="@+id/begin_time_edit"
         android:importantForAutofill="no" />
 
-    <EditText
-        android:id="@+id/car_category_edit"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:ems="10"
-        android:hint="@string/search_car_category_hint"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/end_date_edit"
-        android:importantForAutofill="no" />
-
     <TextView
         android:id="@+id/address_text_view"
         android:layout_width="0dp"
@@ -102,5 +87,71 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/end_date_edit">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_mini"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:text="@string/chip_mini_text" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:text="@string/chip_small_text" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_delivery_van"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:text="@string/chip_delivery_van_text" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_compact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:text="@string/chip_compact_text" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_mini_van"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:text="@string/chip_mini_van_text" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_medium_sized"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:text="@string/chip_medium_sized_text" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_transporter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:text="@string/chip_transporter_text" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_bus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:text="@string/chip_bus_text" />
+    </com.google.android.material.chip.ChipGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
