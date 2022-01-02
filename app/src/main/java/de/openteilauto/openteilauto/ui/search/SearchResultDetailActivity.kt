@@ -1,8 +1,10 @@
 package de.openteilauto.openteilauto.ui.search
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
@@ -11,6 +13,8 @@ import androidx.lifecycle.ViewModelProvider
 import de.openteilauto.openteilauto.R
 import de.openteilauto.openteilauto.model.SearchResult
 import de.openteilauto.openteilauto.ui.BaseActivity
+import de.openteilauto.openteilauto.ui.bookings.BOOKING_UID
+import de.openteilauto.openteilauto.ui.bookings.BookingsDetailActivity
 import java.lang.NumberFormatException
 import java.text.SimpleDateFormat
 
@@ -35,6 +39,13 @@ class SearchResultDetailActivity : BaseActivity<SearchResultDetailViewModel>() {
         val totalCostTextView: TextView = findViewById(R.id.total_cost_text)
         val kmEdit: EditText = findViewById(R.id.km_edit)
         var searchResult: SearchResult? = null
+
+        val bookButton: Button = findViewById(R.id.button_book)
+        bookButton.setOnClickListener {
+            if (searchResult != null) {
+                model?.book(searchResult!!)
+            }
+        }
 
         kmEdit.setText("20")
 
@@ -84,6 +95,13 @@ class SearchResultDetailActivity : BaseActivity<SearchResultDetailViewModel>() {
 
         model?.getError()?.observe(this, {error ->
             Toast.makeText(this, error?.message, Toast.LENGTH_LONG).show()
+        })
+
+        model?.getBookingUid()?.observe(this, {bookingUid ->
+            val intent = Intent(this, BookingsDetailActivity::class.java).apply {
+                putExtra(BOOKING_UID, bookingUid)
+            }
+            startActivity(intent)
         })
     }
 

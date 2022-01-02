@@ -80,12 +80,30 @@ interface TeilautoApiService {
         @Field("version") version: String = "22748",
         @Field("tracking") tracking: String = "off"
     )
+
+    @FormUrlEncoded
+    @POST("book")
+    suspend fun book(
+        @Field("begin") begin: String,
+        @Field("end") end: String,
+        @Field("vehicleUID") vehicleUID: String?,
+        @Field("vehiclePoolUID") vehiclePoolUID: String?,
+        @Field("bookingText") bookingText: String,
+        @Field("showBookingTextInInvoice") showBookingTextInInvoice: String = "true",
+        @Field("requestTimestamp") requestTimestamp: String,
+        @Field("driveMode") driveMode: String = "tA",
+        @Field("platform") platform: String = "ios",
+        @Field("pg") pg: String = "pg",
+        @Field("version") version: String = "22748",
+        @Field("tracking") tracking: String = "off"
+    ): BookingRequestResponse
 }
 
 class TeilautoApi {
 
     companion object {
-        @Volatile private var INSTANCE: TeilautoApiService? = null
+        @Volatile
+        private var INSTANCE: TeilautoApiService? = null
 
         fun getInstance(context: Context) =
             INSTANCE ?: synchronized(this) {

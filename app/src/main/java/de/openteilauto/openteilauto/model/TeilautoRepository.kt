@@ -40,4 +40,16 @@ class TeilautoRepository(private val teilautoDataSource: TeilautoDataSource) {
     ): Price {
         return teilautoDataSource.getPrice(begin, end, estimatedKm, vehicleUID, vehiclePoolUID)
     }
+
+    suspend fun book(
+        begin: Date,
+        end: Date,
+        vehicleUID: String?,
+        vehiclePoolUID: String?,
+        bookingText: String = "",
+        showBookingTextInInvoice: Boolean = true
+    ): String {
+        return teilautoDataSource.book(begin, end, vehicleUID, vehiclePoolUID, bookingText,
+            showBookingTextInInvoice)
+    }
 }

@@ -17,6 +17,8 @@ interface TeilautoDataSource {
         address: String?, geoPos: GeoPos?, radius: Int): List<SearchResult>
     suspend fun getPrice(begin: Date, end: Date, estimatedKm: Int, vehicleUID: String?,
         vehiclePoolUID: String?): Price
+    suspend fun book(begin: Date, end: Date, vehicleUID: String?, vehiclePoolUID: String?,
+        bookingText: String = "", showBookingTextInvoice: Boolean = true): String
 }
 
 class NetworkTeilautoDataSource(private val context: Context) : TeilautoDataSource {
@@ -203,6 +205,48 @@ class NetworkTeilautoDataSource(private val context: Context) : TeilautoDataSour
                         response.getPrice.data.prices.km.amount,
                         response.getPrice.data.prices.total.amount
                     )
+                }
+                else -> {
+                    throw ApiException(context.resources.getString(R.string.unknown_error))
+                }
+            }
+        } catch (e: HttpException) {
+            throw ApiException(context.resources.getString(R.string.server_error))
+        } catch (e: SocketTimeoutException) {
+            throw ApiException(context.resources.getString(R.string.network_error))
+        }
+    }
+
+    override suspend fun book(
+        begin: Date,
+        end: Date,
+        vehicleUID: String?,
+        vehiclePoolUID: String?,
+        bookingText: String,
+        showBookingTextInvoice: Boolean
+    ): String {
+        check(vehicleUID != null || vehiclePoolUID != null)
+
+        try {
+            val timestamp = System.currentTimeMillis().toString()
+            val response = TeilautoApi.getInstance(context).book(
+                (begin.time / 1000).toString(),
+                (end.time / 1000).toString(),
+                vehicleUID,
+                vehiclePoolUID,
+                bookingText,
+                if (showBookingTextInvoice) "true" else "false",
+                timestamp
+            )
+            when {
+                !response.hasValidIdentity -> {
+                    throw NotLoggedInException()
+                }
+                response.error != null -> {
+                    throw ApiException(response.error.message)
+                }
+                response.book?.data != null -> {
+                    return response.book.data.bookingUID.toString()
                 }
                 else -> {
                     throw ApiException(context.resources.getString(R.string.unknown_error))

@@ -10,6 +10,7 @@ class SearchResultDetailViewModel(application: Application) : BaseViewModel(appl
     private val timePrice: MutableLiveData<Int> = MutableLiveData()
     private val kmPrice: MutableLiveData<Int> = MutableLiveData()
     private val totalPrice: MutableLiveData<Int> = MutableLiveData()
+    private val bookingUid: MutableLiveData<String> = MutableLiveData()
 
     fun updatePriceEstimation(searchResult: SearchResult, estimatedKm: Int) {
         viewModelScope.launch {
@@ -39,5 +40,27 @@ class SearchResultDetailViewModel(application: Application) : BaseViewModel(appl
 
     fun getTotalPrice(): LiveData<Int> {
         return totalPrice
+    }
+
+    fun getBookingUid(): LiveData<String> {
+        return bookingUid
+    }
+
+    fun book(searchResult: SearchResult) {
+        viewModelScope.launch {
+            try {
+                val bookingUid = repository.book(
+                    searchResult.begin,
+                    searchResult.end,
+                    searchResult.vehicle.vehicleUID,
+                    searchResult.vehicle.vehiclePoolUID
+                )
+                this@SearchResultDetailViewModel.bookingUid.postValue(bookingUid)
+            } catch (e: NotLoggedInException) {
+                notLoggedIn.postValue(true)
+            } catch (e: ApiException) {
+                error.postValue(AppError(e.message?: ""))
+            }
+        }
     }
 }

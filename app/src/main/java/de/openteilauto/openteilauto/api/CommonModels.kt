@@ -71,3 +71,23 @@ data class Equipment(
     val short: String,
     val long: String
 )
+
+data class PriceList(
+    val timeCost: Price,
+    val kmCost: Price,
+    val cancelationCost: Price,
+    val changeFees: Price,
+    val cancelationFee: Price,
+    val bookingFee: Price,
+    val changeFee: Price,
+    val minBookingPrice: MinBookingPrice
+)
+
+data class Price(
+    val amount: Int,
+    val currency: String,
+    val vat: String,
+    val tax: Int,
+    val priceNetto: Int,
+    val displayNettoPrice: Boolean
+)
