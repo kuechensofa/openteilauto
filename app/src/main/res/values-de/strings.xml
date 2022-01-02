@@ -24,4 +24,21 @@
     <string name="bookings_list_title">Buchungen</string>
     <string name="login_title">Login</string>
     <string name="booking_detail_title">Buchung</string>
+    <string name="search_button_description">Suche</string>
+    <string name="search_title">Suche</string>
+    <string name="search_address_hint">Adresse</string>
+    <string name="search_begin_time_hint">Startzeit</string>
+    <string name="search_end_time_hint">Endzeit</string>
+    <string name="search_button_text">Suchen</string>
+    <string name="search_location_description">GPS abrufen</string>
+    <string name="button_choose_date_time">OK</string>
+    <string name="search_begin_date_hint">Startdatum</string>
+    <string name="search_end_date_hint">Enddatum</string>
+    <string name="search_car_category_hint">Autokategorie</string>
+    <string name="date_format_invalid">Datumsformat ist ungültig</string>
+    <string name="time_format_invalid">Zeitformat ist ungültig</string>
+    <string name="begin_date_time_invalid">Startdatumsformat ist ungültig</string>
+    <string name="end_date_time_invalid">Enddatumsformat ist ungültig</string>
+    <string name="location_required">Standortdaten werden für die Suche benötigt</string>
+    <string name="location_unknown">Keine Position bekannt</string>
 </resources>

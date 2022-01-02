@@ -23,4 +23,21 @@
     <string name="bookings_list_title">Bookings</string>
     <string name="login_title">Login</string>
     <string name="booking_detail_title">Booking</string>
+    <string name="search_button_description">Search</string>
+    <string name="search_title">Search</string>
+    <string name="search_address_hint">Address</string>
+    <string name="search_begin_time_hint">Begin Time</string>
+    <string name="search_end_time_hint">End Time</string>
+    <string name="search_button_text">Search</string>
+    <string name="search_location_description">Get Geo Location</string>
+    <string name="button_choose_date_time">Choose</string>
+    <string name="search_begin_date_hint">Begin Date</string>
+    <string name="search_end_date_hint">End Date</string>
+    <string name="search_car_category_hint">Car Category</string>
+    <string name="date_format_invalid">Date format is invalid</string>
+    <string name="time_format_invalid">Time format is invalid</string>
+    <string name="begin_date_time_invalid">Begin date time is invalid</string>
+    <string name="end_date_time_invalid">End date time is invalid</string>
+    <string name="location_required">Location is required for the search functionality</string>
+    <string name="location_unknown">No location found yet</string>
 </resources>

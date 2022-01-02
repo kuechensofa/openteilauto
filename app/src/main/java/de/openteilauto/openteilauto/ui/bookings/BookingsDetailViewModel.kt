@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 class BookingsDetailViewModel(application: Application, private val bookingUID: String)
         : AndroidViewModel(application) {
     private val repository =
-        BookingRepository(NetworkBookingDataSource(application.applicationContext))
+        TeilautoRepository(NetworkTeilautoDataSource(application.applicationContext))
 
     private val booking: MutableLiveData<Booking> by lazy {
         MutableLiveData<Booking>().also {

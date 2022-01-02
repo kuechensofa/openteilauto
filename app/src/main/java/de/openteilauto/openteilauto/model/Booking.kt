@@ -21,9 +21,7 @@ data class Booking(
 
             val receivedPetrolCard = receivedBooking.petrolCardObject?.petrolCard
             val petrolCard = if (receivedPetrolCard != null) {
-                PetrolCard(receivedPetrolCard.uid, receivedPetrolCard.number,
-                    receivedPetrolCard.pin, receivedPetrolCard.description,
-                    receivedPetrolCard.cardUID)
+                PetrolCard.fromReceivedPetrolCard(receivedPetrolCard)
             } else {
                 null
             }
@@ -55,7 +53,8 @@ data class Vehicle(
         fun fromReceivedVehicle(receivedVehicle: de.openteilauto.openteilauto.api.Vehicle): Vehicle {
             val station = Station.fromReceivedStation(receivedVehicle.station)
             val imageUrl = Uri.parse(receivedVehicle.imagePath)
-            return Vehicle(receivedVehicle.vehicleUID, receivedVehicle.name,
+            val uid = receivedVehicle.vehicleUID ?: receivedVehicle.poolUID
+            return Vehicle(uid!!, receivedVehicle.name,
                 receivedVehicle.licensePlate, receivedVehicle.model, receivedVehicle.brand,
                 station, receivedVehicle.title, imageUrl)
         }
@@ -75,17 +74,6 @@ data class Station(
             return Station(receivedStation.uid, receivedStation.name,
                 receivedStation.shorthand, receivedStation.hasFixedParking,
                 stationGeoPos)
-        }
-    }
-}
-
-data class GeoPos(
-    val lon: String,
-    val lat: String
-) {
-    companion object {
-        fun fromReceivedGeoPos(receivedGeoPos: de.openteilauto.openteilauto.api.GeoPos): GeoPos {
-            return GeoPos(receivedGeoPos.lon, receivedGeoPos.lat)
         }
     }
 }

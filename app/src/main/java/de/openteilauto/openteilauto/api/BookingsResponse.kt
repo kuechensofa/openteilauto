@@ -33,40 +33,6 @@ data class Booking(
     val extension: BookingExtension
 )
 
-data class Vehicle(
-    val name: String,
-    val licensePlate: String,
-    val model: String,
-    val brand: String,
-    val vehicleUID: String,
-    val rentalObjectID: String,
-    val showType: String,
-    val additionalInfo: VehicleAdditionalInfo,
-    val station: Station,
-    val driveMode: String,
-    val title: String,
-    val mileage: Mileage?,
-    val imagePath: String
-)
-
-data class VehicleAdditionalInfo(
-    val seats: Int?,
-    val doors: Int?,
-    val colour: String?,
-    val fuelType: String?,
-    val changeLevel: Int?,
-    val chargeStatus: String?,
-    val fuelCategory: String?
-)
-
-data class Station(
-    val uid: Int,
-    val name: String,
-    val shorthand: String,
-    val hasFixedParking: Boolean,
-    val geoPos: GeoPos
-)
-
 data class BookingExtension(
     val maxUntil: String,
     val denialReason: String

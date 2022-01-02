@@ -6,7 +6,7 @@ import de.openteilauto.openteilauto.model.*
 import kotlinx.coroutines.launch
 
 class BookingsViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository = BookingRepository(NetworkBookingDataSource(application.applicationContext))
+    private val repository = TeilautoRepository(NetworkTeilautoDataSource(application.applicationContext))
 
     private val bookings: MutableLiveData<List<Booking>> by lazy {
         MutableLiveData<List<Booking>>().also {

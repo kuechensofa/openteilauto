@@ -2,18 +2,22 @@ package de.openteilauto.openteilauto.model
 
 import android.content.Context
 import de.openteilauto.openteilauto.R
+import de.openteilauto.openteilauto.api.SearchData
 import de.openteilauto.openteilauto.api.TeilautoApi
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
+import java.util.*
 
-interface BookingDataSource {
+interface TeilautoDataSource {
     suspend fun getBookings(): List<Booking>
     suspend fun getBooking(bookingUID: String): Booking?
     suspend fun unlockVehicle(bookingUID: String, appPIN: String): Boolean
     suspend fun lockVehicle(bookingUID: String): Boolean
+    suspend fun search(begin: Date, end: Date, vehicleClasses: List<VehicleClass>, maxResults: Int,
+        address: String?, geoPos: GeoPos?, radius: Int): List<SearchResult>
 }
 
-class NetworkBookingDataSource(private val context: Context) : BookingDataSource {
+class NetworkTeilautoDataSource(private val context: Context) : TeilautoDataSource {
 
     override suspend fun getBookings(): List<Booking> {
         try {
@@ -120,6 +124,51 @@ class NetworkBookingDataSource(private val context: Context) : BookingDataSource
         }
     }
 
+    override suspend fun search(
+        begin: Date,
+        end: Date,
+        vehicleClasses: List<VehicleClass>,
+        maxResults: Int,
+        address: String?,
+        geoPos: GeoPos?,
+        radius: Int
+    ): List<SearchResult> {
+        check(address != null || geoPos != null)
+
+        try {
+            val timestamp = System.currentTimeMillis().toString()
+            val response = TeilautoApi.getInstance(context).search(
+                (begin.time / 1000).toString(),
+                (end.time / 1000).toString(),
+                vehicleClasses.map{ it.classCode.toString() },
+                maxResults.toString(),
+                address,
+                geoPos?.lat,
+                geoPos?.lon,
+                radius.toString(),
+                timestamp
+            )
+            when {
+                !response.hasValidIdentity -> {
+                    throw NotLoggedInException()
+                }
+                response.error != null -> {
+                    throw ApiException(response.error.message)
+                }
+                response.search?.data != null -> {
+                    return transformSearchResults(response.search.data)
+                }
+                else -> {
+                    throw ApiException(context.resources.getString(R.string.unknown_error))
+                }
+            }
+        } catch (e: HttpException) {
+            throw ApiException(context.resources.getString(R.string.server_error))
+        } catch (e: SocketTimeoutException) {
+            throw ApiException(context.resources.getString(R.string.network_error))
+        }
+    }
+
     private fun transformBookings(receivedBookings: List<de.openteilauto.openteilauto.api.Booking?>)
         : List<Booking> {
         val bookings = mutableListOf<Booking>()
@@ -132,5 +181,9 @@ class NetworkBookingDataSource(private val context: Context) : BookingDataSource
         }
 
         return bookings.toList()
+    }
+
+    private fun transformSearchResults(receivedSearchResults: List<SearchData>): List<SearchResult> {
+        return receivedSearchResults.map { SearchResult.fromApiSearchData(it) }
     }
 }

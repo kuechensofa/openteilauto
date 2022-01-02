@@ -34,6 +34,25 @@ interface TeilautoApiService {
     @FormUrlEncoded
     @POST("lockVehicle")
     suspend fun lockVehicle(@FieldMap(encoded = true) lockRequestBody: Map<String, String>): LockResponse
+
+    @FormUrlEncoded
+    @POST("search")
+    suspend fun search(
+        @Field("begin") begin: String,
+        @Field("end") end: String,
+        @Field("classUID") classUIDs: List<String>,
+        @Field("maxResults") maxResults: String,
+        @Field("address") address: String?,
+        @Field("geoPosSearch[geoPos][lat]") lat: String?,
+        @Field("geoPosSearch[geoPos][lon]") lon: String?,
+        @Field("geoPosSearch[radius]") radius: String,
+        @Field("requestTimestamp") requestTimestamp: String,
+        @Field("driveMode") driveMode: String = "tA",
+        @Field("platform") platform: String = "ios",
+        @Field("pg") pg: String = "pg",
+        @Field("version") version: String = "22748",
+        @Field("tracking") tracking: String = "off"
+    ): SearchResponse
 }
 
 class TeilautoApi {

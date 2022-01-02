@@ -7,9 +7,11 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import de.openteilauto.openteilauto.R
 import de.openteilauto.openteilauto.model.Booking
 import de.openteilauto.openteilauto.ui.login.LoginActivity
+import de.openteilauto.openteilauto.ui.search.SearchActivity
 
 class BookingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +26,12 @@ class BookingsActivity : AppCompatActivity() {
         bookingsView.adapter = bookingsAdapter
 
         val swipeRefreshLayout = findViewById<SwipeRefreshLayout>(R.id.bookings_swipe_refresh)
+
+        val searchActionButton = findViewById<FloatingActionButton>(R.id.search_action_button)
+        searchActionButton.setOnClickListener {
+            val intent = Intent(this, SearchActivity::class.java)
+            startActivity(intent)
+        }
 
         val model = ViewModelProvider(this)[BookingsViewModel::class.java]
         model.getBookings().observe(this, { bookings ->
