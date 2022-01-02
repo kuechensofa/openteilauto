@@ -40,4 +40,10 @@
     <string name="end_date_time_invalid">End date time is invalid</string>
     <string name="location_required">Location is required for the search functionality</string>
     <string name="location_unknown">No location found yet</string>
+    <string name="button_book">Book</string>
+    <string name="time_cost_label">Time cost</string>
+    <string name="km_cost_label">Distance cost</string>
+    <string name="km_edit_label">KM</string>
+    <string name="total_cost_label">Total costs</string>
+    <string name="enter_valid_number">Enter a valid number</string>
 </resources>

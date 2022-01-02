@@ -1,5 +1,6 @@
 package de.openteilauto.openteilauto.ui.search
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.RecyclerView
@@ -28,6 +29,8 @@ class SearchResultsActivity : AppCompatActivity() {
     }
 
     private fun adapterOnClick(searchResult: SearchResult) {
-
+        val intent = Intent(this, SearchResultDetailActivity::class.java)
+        intent.putExtra(SEARCH_RESULT, searchResult)
+        startActivity(intent)
     }
 }

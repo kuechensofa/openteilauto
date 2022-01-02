@@ -50,16 +50,26 @@ data class Vehicle(
     val brand: String,
     val station: Station,
     val title: String,
-    val imageUrl: Uri
+    val imageUrl: Uri,
+    val vehicleUID: String?,
+    val vehiclePoolUID: String?
 ): Parcelable {
     companion object {
         fun fromReceivedVehicle(receivedVehicle: de.openteilauto.openteilauto.api.Vehicle): Vehicle {
             val station = Station.fromReceivedStation(receivedVehicle.station)
             val imageUrl = Uri.parse(receivedVehicle.imagePath)
             val uid = receivedVehicle.vehicleUID ?: receivedVehicle.poolUID
-            return Vehicle(uid!!, receivedVehicle.name,
-                receivedVehicle.licensePlate, receivedVehicle.model, receivedVehicle.brand,
-                station, receivedVehicle.title, imageUrl)
+            return Vehicle(
+                uid!!,
+                receivedVehicle.name,
+                receivedVehicle.licensePlate,
+                receivedVehicle.model,
+                receivedVehicle.brand,
+                station,
+                receivedVehicle.title,
+                imageUrl,
+                receivedVehicle.vehicleUID,
+                receivedVehicle.poolUID)
         }
     }
 }

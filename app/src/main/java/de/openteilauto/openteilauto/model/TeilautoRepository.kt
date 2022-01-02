@@ -30,4 +30,14 @@ class TeilautoRepository(private val teilautoDataSource: TeilautoDataSource) {
         return teilautoDataSource.search(beginDate, endDate, categories, 10, address,
             geoPos, radius)
     }
+
+    suspend fun getPrice(
+        begin: Date,
+        end: Date,
+        estimatedKm: Int,
+        vehicleUID: String?,
+        vehiclePoolUID: String?
+    ): Price {
+        return teilautoDataSource.getPrice(begin, end, estimatedKm, vehicleUID, vehiclePoolUID)
+    }
 }

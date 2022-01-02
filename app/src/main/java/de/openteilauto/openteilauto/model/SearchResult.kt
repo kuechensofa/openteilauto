@@ -13,7 +13,8 @@ data class SearchResult(
     val vehicle: Vehicle,
     val startingPoint: Station,
     val rating: Int,
-    val timeOverlapping: Boolean
+    val timeOverlapping: Boolean,
+    val timeCost: Int
 ): Parcelable {
     companion object {
         fun fromApiSearchData(receivedSearchData: SearchData): SearchResult {
@@ -29,7 +30,8 @@ data class SearchResult(
                 vehicle,
                 startingPoint,
                 receivedSearchData.rating,
-                receivedSearchData.timeOverlapping
+                receivedSearchData.timeOverlapping,
+                receivedSearchData.price.timeCost.amount
             )
         }
     }

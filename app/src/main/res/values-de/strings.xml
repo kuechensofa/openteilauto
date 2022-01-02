@@ -41,4 +41,10 @@
     <string name="end_date_time_invalid">Enddatumsformat ist ungültig</string>
     <string name="location_required">Standortdaten werden für die Suche benötigt</string>
     <string name="location_unknown">Keine Position bekannt</string>
+    <string name="button_book">Buchen</string>
+    <string name="time_cost_label">Zeitpreis</string>
+    <string name="km_cost_label">Kilometerpreis</string>
+    <string name="km_edit_label">KM</string>
+    <string name="total_cost_label">Gesamtpreis</string>
+    <string name="enter_valid_number">Gebe eine Zahl ein</string>
 </resources>

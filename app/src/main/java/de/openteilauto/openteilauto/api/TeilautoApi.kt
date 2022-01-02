@@ -53,6 +53,22 @@ interface TeilautoApiService {
         @Field("version") version: String = "22748",
         @Field("tracking") tracking: String = "off"
     ): SearchResponse
+
+    @FormUrlEncoded
+    @POST("getPrice")
+    suspend fun getPrice(
+        @Field("begin") begin: String,
+        @Field("end") end: String,
+        @Field("estimatedKM") estimatedKM: String,
+        @Field("vehicleUID") vehicleUID: String?,
+        @Field("vehiclePoolUID") vehiclePoolUID: String?,
+        @Field("requestTimestamp") requestTimestamp: String,
+        @Field("driveMode") driveMode: String = "tA",
+        @Field("platform") platform: String = "ios",
+        @Field("pg") pg: String = "pg",
+        @Field("version") version: String = "22748",
+        @Field("tracking") tracking: String = "off"
+    ): PriceResponse
 }
 
 class TeilautoApi {

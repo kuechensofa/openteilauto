@@ -15,6 +15,8 @@ interface TeilautoDataSource {
     suspend fun lockVehicle(bookingUID: String): Boolean
     suspend fun search(begin: Date, end: Date, vehicleClasses: List<VehicleClass>, maxResults: Int,
         address: String?, geoPos: GeoPos?, radius: Int): List<SearchResult>
+    suspend fun getPrice(begin: Date, end: Date, estimatedKm: Int, vehicleUID: String?,
+        vehiclePoolUID: String?): Price
 }
 
 class NetworkTeilautoDataSource(private val context: Context) : TeilautoDataSource {
@@ -157,6 +159,50 @@ class NetworkTeilautoDataSource(private val context: Context) : TeilautoDataSour
                 }
                 response.search?.data != null -> {
                     return transformSearchResults(response.search.data)
+                }
+                else -> {
+                    throw ApiException(context.resources.getString(R.string.unknown_error))
+                }
+            }
+        } catch (e: HttpException) {
+            throw ApiException(context.resources.getString(R.string.server_error))
+        } catch (e: SocketTimeoutException) {
+            throw ApiException(context.resources.getString(R.string.network_error))
+        }
+    }
+
+    override suspend fun getPrice(
+        begin: Date,
+        end: Date,
+        estimatedKm: Int,
+        vehicleUID: String?,
+        vehiclePoolUID: String?
+    ): Price {
+        check(vehicleUID != null || vehiclePoolUID != null)
+
+        try {
+            val timestamp = System.currentTimeMillis().toString()
+            val response = TeilautoApi.getInstance(context).getPrice(
+                (begin.time / 1000).toString(),
+                (end.time / 1000).toString(),
+                estimatedKm.toString(),
+                vehicleUID,
+                vehiclePoolUID,
+                timestamp
+            )
+            when {
+                !response.hasValidIdentity -> {
+                    throw NotLoggedInException()
+                }
+                response.error != null -> {
+                    throw ApiException(response.error.message)
+                }
+                response.getPrice?.data != null -> {
+                    return Price(
+                        response.getPrice.data.prices.time.amount,
+                        response.getPrice.data.prices.km.amount,
+                        response.getPrice.data.prices.total.amount
+                    )
                 }
                 else -> {
                     throw ApiException(context.resources.getString(R.string.unknown_error))

@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.2125" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.19947916666666668" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.19947916666666668" />
         <entry key="app/src/main/res/layout/activity_bookings.xml" value="0.33" />
@@ -10,6 +11,7 @@
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.18697916666666667" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_search.xml" value="0.3296875" />
+        <entry key="app/src/main/res/layout/activity_search_result_detail.xml" value="0.33" />
         <entry key="app/src/main/res/layout/booking_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/date_picker.xml" value="0.190625" />
         <entry key="app/src/main/res/layout/date_time_picker.xml" value="0.190625" />
