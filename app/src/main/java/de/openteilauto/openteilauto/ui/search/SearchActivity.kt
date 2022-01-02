@@ -117,8 +117,10 @@ class SearchActivity : AppCompatActivity() {
         }
 
         model.getSearchResults().observe(this, { searchResults ->
-            for (result in searchResults) {
-                Log.d(null, result.vehicle.title)
+            if (searchResults != null) {
+                val intent = Intent(this, SearchResultsActivity::class.java)
+                intent.putExtra(SEARCH_RESULTS, searchResults.toTypedArray())
+                startActivity(intent)
             }
         })
 

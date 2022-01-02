@@ -1,6 +1,8 @@
 package de.openteilauto.openteilauto.model
 
 import android.net.Uri
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import java.util.*
 
 data class Booking(
@@ -39,6 +41,7 @@ data class Booking(
     }
 }
 
+@Parcelize
 data class Vehicle(
     val uid: String,
     val name: String,
@@ -48,7 +51,7 @@ data class Vehicle(
     val station: Station,
     val title: String,
     val imageUrl: Uri
-) {
+): Parcelable {
     companion object {
         fun fromReceivedVehicle(receivedVehicle: de.openteilauto.openteilauto.api.Vehicle): Vehicle {
             val station = Station.fromReceivedStation(receivedVehicle.station)
@@ -61,13 +64,14 @@ data class Vehicle(
     }
 }
 
+@Parcelize
 data class Station(
     val uid: Int,
     val name: String,
     val shorthand: String,
     val hasFixedParking: Boolean,
     val geoPos: GeoPos
-) {
+): Parcelable {
     companion object {
         fun fromReceivedStation(receivedStation: de.openteilauto.openteilauto.api.Station): Station {
             val stationGeoPos = GeoPos.fromReceivedGeoPos(receivedStation.geoPos)

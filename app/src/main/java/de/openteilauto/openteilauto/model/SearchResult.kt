@@ -1,16 +1,20 @@
 package de.openteilauto.openteilauto.model
 
+import android.os.Parcelable
 import de.openteilauto.openteilauto.api.SearchData
+import kotlinx.parcelize.Parcelize
 import java.util.*
 
+@Parcelize
 data class SearchResult(
+    val uid: Int,
     val begin: Date,
     val end: Date,
     val vehicle: Vehicle,
     val startingPoint: Station,
     val rating: Int,
     val timeOverlapping: Boolean
-) {
+): Parcelable {
     companion object {
         fun fromApiSearchData(receivedSearchData: SearchData): SearchResult {
             val begin = Date(receivedSearchData.begin * 1000)
@@ -19,6 +23,7 @@ data class SearchResult(
             val startingPoint = Station.fromReceivedStation(receivedSearchData.startingPoint)
 
             return SearchResult(
+                receivedSearchData.uid,
                 begin,
                 end,
                 vehicle,
