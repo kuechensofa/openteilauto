@@ -3,22 +3,30 @@ package de.openteilauto.openteilauto.ui.bookings
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import de.openteilauto.openteilauto.R
 import de.openteilauto.openteilauto.model.Booking
+import de.openteilauto.openteilauto.ui.BaseActivity
 import de.openteilauto.openteilauto.ui.login.LoginActivity
 import de.openteilauto.openteilauto.ui.search.SearchActivity
 
-class BookingsActivity : AppCompatActivity() {
+class BookingsActivity : BaseActivity<BookingsViewModel>() {
+    override var model: BookingsViewModel? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bookings)
 
         setTitle(R.string.bookings_list_title)
+
+        model = ViewModelProvider(this)[BookingsViewModel::class.java]
 
         val bookingsAdapter = BookingsAdapter { booking -> adapterOnClick(booking) }
 
@@ -29,17 +37,15 @@ class BookingsActivity : AppCompatActivity() {
 
         val searchActionButton = findViewById<FloatingActionButton>(R.id.search_action_button)
         searchActionButton.setOnClickListener {
-            val intent = Intent(this, SearchActivity::class.java)
-            startActivity(intent)
+            startSearchActivity()
         }
 
-        val model = ViewModelProvider(this)[BookingsViewModel::class.java]
-        model.getBookings().observe(this, { bookings ->
+        model?.getBookings()?.observe(this, { bookings ->
             swipeRefreshLayout.isRefreshing = false
             bookingsAdapter.submitList(bookings)
         })
 
-        model.isNotLoggedIn().observe(this, { notLoggedIn ->
+        model?.isNotLoggedIn()?.observe(this, { notLoggedIn ->
             if (notLoggedIn) {
                 swipeRefreshLayout.isRefreshing = false
                 val intent = Intent(this, LoginActivity::class.java)
@@ -47,7 +53,7 @@ class BookingsActivity : AppCompatActivity() {
             }
         })
 
-        model.getError().observe(this, { error ->
+        model?.getError()?.observe(this, { error ->
             if (error != null) {
                 swipeRefreshLayout.isRefreshing = false
                 Toast.makeText(this, error.message, Toast.LENGTH_LONG).show()
@@ -55,7 +61,7 @@ class BookingsActivity : AppCompatActivity() {
         })
 
         swipeRefreshLayout.setOnRefreshListener {
-            model.refreshBookings()
+            model?.refreshBookings()
         }
     }
 

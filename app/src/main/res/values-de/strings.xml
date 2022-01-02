@@ -55,4 +55,6 @@
     <string name="chip_medium_sized_text">Mittelklasse</string>
     <string name="chip_transporter_text">Transporter</string>
     <string name="chip_bus_text">Busse</string>
+    <string name="menu_logout">Abmelden</string>
+    <string name="menu_search">Suchen</string>
 </resources>

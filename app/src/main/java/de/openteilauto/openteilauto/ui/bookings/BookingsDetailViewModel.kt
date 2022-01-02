@@ -3,34 +3,22 @@ package de.openteilauto.openteilauto.ui.bookings
 import android.app.Application
 import androidx.lifecycle.*
 import de.openteilauto.openteilauto.model.*
+import de.openteilauto.openteilauto.ui.BaseViewModel
 import kotlinx.coroutines.launch
 
 class BookingsDetailViewModel(application: Application, private val bookingUID: String)
-        : AndroidViewModel(application) {
-    private val repository =
-        TeilautoRepository(NetworkTeilautoDataSource(application.applicationContext))
-
+        : BaseViewModel(application) {
     private val booking: MutableLiveData<Booking> by lazy {
         MutableLiveData<Booking>().also {
             loadBooking(bookingUID)
         }
     }
 
-    private val error: MutableLiveData<AppError?> = MutableLiveData()
-    private val notLoggedIn: MutableLiveData<Boolean> = MutableLiveData(false)
     private val unlockSuccessful: MutableLiveData<Boolean> = MutableLiveData()
     private val lockSuccessful: MutableLiveData<Boolean> = MutableLiveData()
 
     fun getBooking(): LiveData<Booking> {
         return booking
-    }
-
-    fun getError(): LiveData<AppError?> {
-        return error
-    }
-
-    fun getNotLoggedIn(): LiveData<Boolean> {
-        return notLoggedIn
     }
 
     fun isUnlockSuccessful(): LiveData<Boolean> {

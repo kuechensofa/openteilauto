@@ -16,6 +16,7 @@ import com.google.android.material.chip.Chip
 import de.openteilauto.openteilauto.R
 import de.openteilauto.openteilauto.model.GeoPos
 import de.openteilauto.openteilauto.model.VehicleClass
+import de.openteilauto.openteilauto.ui.BaseActivity
 import de.openteilauto.openteilauto.ui.login.LoginActivity
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -23,7 +24,9 @@ import java.util.*
 
 private const val TAG = "SearchActivity"
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : BaseActivity<SearchViewModel>() {
+
+    override var model: SearchViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +40,7 @@ class SearchActivity : AppCompatActivity() {
         val endDateEdit = findViewById<EditText>(R.id.end_date_edit)
         val endTimeEdit = findViewById<EditText>(R.id.end_time_edit)
 
-        val model = ViewModelProvider(this)[SearchViewModel::class.java]
+        model = ViewModelProvider(this)[SearchViewModel::class.java]
 
         val dateTimeFormat = SimpleDateFormat("HH:mm dd.MM.yyyy")
 
@@ -48,16 +51,16 @@ class SearchActivity : AppCompatActivity() {
             when {
                 permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
                     Log.d(TAG, "Fine location access granted")
-                    model.getLocation().observe(this, { newLocation ->
+                    model?.getLocation()?.observe(this, { newLocation ->
                         location = newLocation
-                        model.requestGeocode(newLocation)
+                        model?.requestGeocode(newLocation)
                     })
                 }
                 permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
                     Log.d(TAG, "Coarse location access granted")
-                    model.getLocation().observe(this, { newLocation ->
+                    model?.getLocation()?.observe(this, { newLocation ->
                         location = newLocation
-                        model.requestGeocode(newLocation)
+                        model?.requestGeocode(newLocation)
                     })
                 }
                 else -> {
@@ -68,7 +71,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         val addressTextView = findViewById<TextView>(R.id.address_text_view)
-        model.getGeocode().observe(this, { address ->
+        model?.getGeocode()?.observe(this, { address ->
             addressTextView.text = address.getAddressLine(0)
         })
 
@@ -106,7 +109,7 @@ class SearchActivity : AppCompatActivity() {
             if (location != null) {
                 val geoPos = GeoPos(location!!.longitude.toString(), location!!.latitude.toString())
 
-                model.search(
+                model?.search(
                     "",
                     beginDateTime,
                     endDateTime,
@@ -118,7 +121,7 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        model.getSearchResults().observe(this, { searchResults ->
+        model?.getSearchResults()?.observe(this, { searchResults ->
             if (searchResults != null) {
                 val intent = Intent(this, SearchResultsActivity::class.java)
                 intent.putExtra(SEARCH_RESULTS, searchResults.toTypedArray())
@@ -126,14 +129,14 @@ class SearchActivity : AppCompatActivity() {
             }
         })
 
-        model.isNotLoggedIn().observe(this, {
+        model?.isNotLoggedIn()?.observe(this, {
             if (it) {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
             }
         })
 
-        model.getError().observe(this, { error ->
+        model?.getError()?.observe(this, { error ->
             if (error != null) {
                 Toast.makeText(this, error.message, Toast.LENGTH_SHORT).show()
             }

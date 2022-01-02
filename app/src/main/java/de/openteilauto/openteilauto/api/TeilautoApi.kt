@@ -69,6 +69,17 @@ interface TeilautoApiService {
         @Field("version") version: String = "22748",
         @Field("tracking") tracking: String = "off"
     ): PriceResponse
+
+    @FormUrlEncoded
+    @POST("logout")
+    suspend fun logout(
+        @Field("requestTimestamp") requestTimestamp: String,
+        @Field("driveMode") driveMode: String = "tA",
+        @Field("platform") platform: String = "ios",
+        @Field("pg") pg: String = "pg",
+        @Field("version") version: String = "22748",
+        @Field("tracking") tracking: String = "off"
+    )
 }
 
 class TeilautoApi {

@@ -10,12 +10,16 @@ import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import de.openteilauto.openteilauto.R
 import de.openteilauto.openteilauto.model.SearchResult
+import de.openteilauto.openteilauto.ui.BaseActivity
 import java.lang.NumberFormatException
 import java.text.SimpleDateFormat
 
 const val SEARCH_RESULT = "de.openteilauto.openteilauto.SearchResult"
 
-class SearchResultDetailActivity : AppCompatActivity() {
+class SearchResultDetailActivity : BaseActivity<SearchResultDetailViewModel>() {
+
+    override var model: SearchResultDetailViewModel? = null
+
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +40,7 @@ class SearchResultDetailActivity : AppCompatActivity() {
 
         val dateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm")
 
-        val model = ViewModelProvider(this)[SearchResultDetailViewModel::class.java]
+        model = ViewModelProvider(this)[SearchResultDetailViewModel::class.java]
 
         val bundle = intent.extras
         if (bundle != null) {
@@ -48,7 +52,7 @@ class SearchResultDetailActivity : AppCompatActivity() {
                 beginTextView.text = dateFormat.format(searchResult.begin)
                 endTextView.text = dateFormat.format(searchResult.end)
                 timeCostTextView.text = formatPrice(searchResult.timeCost)
-                model.updatePriceEstimation(searchResult, kmEdit.text.toString().toInt())
+                model?.updatePriceEstimation(searchResult, kmEdit.text.toString().toInt())
             }
         }
 
@@ -59,26 +63,26 @@ class SearchResultDetailActivity : AppCompatActivity() {
 
             if (searchResult != null) {
                 try {
-                    model.updatePriceEstimation(searchResult, it.toString().toInt())
+                    model?.updatePriceEstimation(searchResult, it.toString().toInt())
                 } catch (e: NumberFormatException) {
                     Toast.makeText(this, R.string.enter_valid_number, Toast.LENGTH_SHORT).show()
                 }
             }
         }
 
-        model.getTimePrice().observe(this, {price ->
+        model?.getTimePrice()?.observe(this, {price ->
             timeCostTextView.text = formatPrice(price)
         })
 
-        model.getKmPrice().observe(this, {price ->
+        model?.getKmPrice()?.observe(this, {price ->
             kmCostTextView.text = formatPrice(price)
         })
 
-        model.getTotalPrice().observe(this, {price ->
+        model?.getTotalPrice()?.observe(this, {price ->
             totalCostTextView.text = formatPrice(price)
         })
 
-        model.getError().observe(this, {error ->
+        model?.getError()?.observe(this, {error ->
             Toast.makeText(this, error?.message, Toast.LENGTH_LONG).show()
         })
     }

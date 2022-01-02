@@ -7,18 +7,15 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.*
 import de.openteilauto.openteilauto.model.*
+import de.openteilauto.openteilauto.ui.BaseViewModel
 import kotlinx.coroutines.launch
 import java.util.*
 
 private const val TAG = "SearchViewModel"
 
-class SearchViewModel(application: Application) : AndroidViewModel(application), LocationListener {
+class SearchViewModel(application: Application) : BaseViewModel(application), LocationListener {
     private val searchResults: MutableLiveData<List<SearchResult>> = MutableLiveData()
-    private val repository: TeilautoRepository =
-        TeilautoRepository(NetworkTeilautoDataSource(application.applicationContext))
 
-    private val error: MutableLiveData<AppError?> = MutableLiveData()
-    private val notLoggedIn: MutableLiveData<Boolean> = MutableLiveData(false)
     private val location: MutableLiveData<Location> by lazy {
         MutableLiveData<Location>().also {
             updateLocation()
@@ -56,14 +53,6 @@ class SearchViewModel(application: Application) : AndroidViewModel(application),
 
     fun getSearchResults(): LiveData<List<SearchResult>> {
         return searchResults
-    }
-
-    fun isNotLoggedIn(): LiveData<Boolean> {
-        return notLoggedIn
-    }
-
-    fun getError(): LiveData<AppError?> {
-        return error
     }
 
     fun getLocation(): LiveData<Location> {

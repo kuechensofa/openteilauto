@@ -54,4 +54,6 @@
     <string name="chip_medium_sized_text">Medium Sized</string>
     <string name="chip_transporter_text">Transporter</string>
     <string name="chip_bus_text">Busses</string>
+    <string name="menu_logout">Logout</string>
+    <string name="menu_search">Search</string>
 </resources>
