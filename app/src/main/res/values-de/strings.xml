@@ -57,4 +57,7 @@
     <string name="chip_bus_text">Busse</string>
     <string name="menu_logout">Abmelden</string>
     <string name="menu_search">Suchen</string>
+    <string name="cancel_booking_button">Buchung stornieren</string>
+    <string name="cancel_booking_message">Willst du deine Buchung stornieren?</string>
+    <string name="cancel_booking_title">Buchung stornieren</string>
 </resources>

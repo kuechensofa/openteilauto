@@ -52,4 +52,11 @@ class TeilautoRepository(private val teilautoDataSource: TeilautoDataSource) {
         return teilautoDataSource.book(begin, end, vehicleUID, vehiclePoolUID, bookingText,
             showBookingTextInInvoice)
     }
+
+    suspend fun cancelBooking(
+        bookingUID: String,
+        sendConfirmationEmail: Boolean = true
+    ) {
+        return teilautoDataSource.cancelBooking(bookingUID, sendConfirmationEmail)
+    }
 }

@@ -43,6 +43,7 @@ class BookingsDetailActivity : BaseActivity<BookingsDetailViewModel>() {
 
         val unlockButton = findViewById<Button>(R.id.button_unlock)
         val lockButton = findViewById<Button>(R.id.button_lock)
+        val cancelButton = findViewById<Button>(R.id.button_cancel_booking)
 
         unlockButton.setOnClickListener {
             showPinDialog(it)
@@ -107,8 +108,19 @@ class BookingsDetailActivity : BaseActivity<BookingsDetailViewModel>() {
                 refreshLayout.isRefreshing = false
             })
 
+            model?.isBookingCancelled()?.observe(this, {
+                if (it) {
+                    val intent = Intent(this, BookingsActivity::class.java)
+                    startActivity(intent)
+                }
+            })
+
             refreshLayout.setOnRefreshListener {
                 model?.refreshBooking()
+            }
+
+            cancelButton.setOnClickListener {
+                showCancelConfirmationDialog()
             }
         }
     }
@@ -132,6 +144,27 @@ class BookingsDetailActivity : BaseActivity<BookingsDetailViewModel>() {
         }
         builder.setMessage(R.string.enter_pin_message)
             .setTitle(R.string.enter_pin_title)
+
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    private fun showCancelConfirmationDialog() {
+        val builder: AlertDialog.Builder = this.let {
+            AlertDialog.Builder(it)
+        }
+        builder.apply {
+            setPositiveButton(R.string.ok,
+                DialogInterface.OnClickListener { dialog, id ->
+                    model?.cancelBooking()
+                })
+            setNegativeButton(R.string.cancel,
+                DialogInterface.OnClickListener { dialog, id ->
+
+                })
+        }
+        builder.setMessage(R.string.cancel_booking_message)
+            .setTitle(R.string.cancel_booking_title)
 
         val dialog = builder.create()
         dialog.show()

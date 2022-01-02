@@ -1,8 +1,6 @@
 package de.openteilauto.openteilauto.api
 
 import android.content.Context
-import android.text.TextUtils
-import android.util.Log
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.*
@@ -10,10 +8,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.*
-import java.io.*
-import java.util.*
-import kotlin.experimental.and
-import kotlin.math.log
 
 private const val BASE_URL =
     "https://sal2.teilauto.net/api/"
@@ -97,6 +91,19 @@ interface TeilautoApiService {
         @Field("version") version: String = "22748",
         @Field("tracking") tracking: String = "off"
     ): BookingRequestResponse
+
+    @FormUrlEncoded
+    @POST("cancelBooking")
+    suspend fun cancelBooking(
+        @Field("bookingUID") bookingUID: String,
+        @Field("sendConfirmationEmail") sendConfirmationEmail: String = "true",
+        @Field("requestTimestamp") requestTimestamp: String,
+        @Field("driveMode") driveMode: String = "tA",
+        @Field("platform") platform: String = "ios",
+        @Field("pg") pg: String = "pg",
+        @Field("version") version: String = "22748",
+        @Field("tracking") tracking: String = "off"
+    ): BookingCancellationResponse
 }
 
 class TeilautoApi {

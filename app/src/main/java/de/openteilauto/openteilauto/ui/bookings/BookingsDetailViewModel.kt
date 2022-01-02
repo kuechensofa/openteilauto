@@ -16,6 +16,7 @@ class BookingsDetailViewModel(application: Application, private val bookingUID: 
 
     private val unlockSuccessful: MutableLiveData<Boolean> = MutableLiveData()
     private val lockSuccessful: MutableLiveData<Boolean> = MutableLiveData()
+    private val bookingCancelled: MutableLiveData<Boolean> = MutableLiveData()
 
     fun getBooking(): LiveData<Booking> {
         return booking
@@ -27,6 +28,10 @@ class BookingsDetailViewModel(application: Application, private val bookingUID: 
 
     fun isLockSuccessful(): LiveData<Boolean> {
         return lockSuccessful
+    }
+
+    fun isBookingCancelled(): LiveData<Boolean> {
+        return bookingCancelled
     }
 
     fun unlockVehicle(pin: String) {
@@ -57,6 +62,19 @@ class BookingsDetailViewModel(application: Application, private val bookingUID: 
 
     fun refreshBooking() {
         loadBooking(bookingUID)
+    }
+
+    fun cancelBooking() {
+        viewModelScope.launch {
+            try {
+                repository.cancelBooking(bookingUID)
+                bookingCancelled.postValue(true)
+            } catch (e: NotLoggedInException) {
+                notLoggedIn.postValue(true)
+            } catch (e: ApiException) {
+                error.postValue(AppError(e.message?: ""))
+            }
+        }
     }
 
     private fun loadBooking(bookingUID: String) {

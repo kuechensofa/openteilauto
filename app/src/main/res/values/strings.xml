@@ -56,4 +56,7 @@
     <string name="chip_bus_text">Busses</string>
     <string name="menu_logout">Logout</string>
     <string name="menu_search">Search</string>
+    <string name="cancel_booking_button">Cancel Booking</string>
+    <string name="cancel_booking_message">Do you want to cancel your booking?</string>
+    <string name="cancel_booking_title">Cancel Booking</string>
 </resources>

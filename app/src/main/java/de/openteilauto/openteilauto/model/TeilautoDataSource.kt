@@ -19,6 +19,7 @@ interface TeilautoDataSource {
         vehiclePoolUID: String?): Price
     suspend fun book(begin: Date, end: Date, vehicleUID: String?, vehiclePoolUID: String?,
         bookingText: String = "", showBookingTextInvoice: Boolean = true): String
+    suspend fun cancelBooking(bookingUID: String, sendConfirmationEmail: Boolean = true)
 }
 
 class NetworkTeilautoDataSource(private val context: Context) : TeilautoDataSource {
@@ -247,6 +248,35 @@ class NetworkTeilautoDataSource(private val context: Context) : TeilautoDataSour
                 }
                 response.book?.data != null -> {
                     return response.book.data.bookingUID.toString()
+                }
+                else -> {
+                    throw ApiException(context.resources.getString(R.string.unknown_error))
+                }
+            }
+        } catch (e: HttpException) {
+            throw ApiException(context.resources.getString(R.string.server_error))
+        } catch (e: SocketTimeoutException) {
+            throw ApiException(context.resources.getString(R.string.network_error))
+        }
+    }
+
+    override suspend fun cancelBooking(bookingUID: String, sendConfirmationEmail: Boolean) {
+        try {
+            val timestamp = System.currentTimeMillis().toString()
+            val response = TeilautoApi.getInstance(context).cancelBooking(
+                bookingUID,
+                if (sendConfirmationEmail) "true" else "false",
+                timestamp
+            )
+            when {
+                !response.hasValidIdentity -> {
+                    throw NotLoggedInException()
+                }
+                response.error != null -> {
+                    throw ApiException(response.error.message)
+                }
+                response.cancelBooking?.data != null -> {
+                    return
                 }
                 else -> {
                     throw ApiException(context.resources.getString(R.string.unknown_error))
