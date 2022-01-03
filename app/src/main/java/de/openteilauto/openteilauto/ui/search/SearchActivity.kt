@@ -44,31 +44,7 @@ class SearchActivity : BaseActivity<SearchViewModel>() {
 
         model = ViewModelProvider(this)[SearchViewModel::class.java]
 
-        val editLocationButton: Button = findViewById(R.id.button_edit_location)
-        editLocationButton.setOnClickListener {
-            editLocation()
-        }
-
-        val dateTimeFormat = SimpleDateFormat("HH:mm dd.MM.yyyy")
-
         var location: GeoPos? = null
-        val locationPermissionRequest = registerForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions()
-        ) { permissions ->
-            when {
-                permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
-                    Log.d(TAG, "Fine location access granted")
-                }
-                permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
-                    Log.d(TAG, "Coarse location access granted")
-                }
-                else -> {
-                    Toast.makeText(this, R.string.manual_location_warning, Toast.LENGTH_LONG).show()
-                    Log.d(TAG, "No location permission granted")
-                }
-            }
-        }
-
         model?.getLocation()?.observe(this, { newLocation ->
             location = newLocation
         })
@@ -77,6 +53,33 @@ class SearchActivity : BaseActivity<SearchViewModel>() {
         model?.getGeocode()?.observe(this, { geocode ->
             addressTextView.text = geocode
         })
+
+        val editLocationButton: Button = findViewById(R.id.button_edit_location)
+        editLocationButton.setOnClickListener {
+            editLocation()
+        }
+
+        val dateTimeFormat = SimpleDateFormat("HH:mm dd.MM.yyyy")
+
+
+        val locationPermissionRequest = registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            when {
+                permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
+                    Log.d(TAG, "Fine location access granted")
+                    model?.updateLocation()
+                }
+                permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
+                    Log.d(TAG, "Coarse location access granted")
+                    model?.updateLocation()
+                }
+                else -> {
+                    Toast.makeText(this, R.string.manual_location_warning, Toast.LENGTH_LONG).show()
+                    Log.d(TAG, "No location permission granted")
+                }
+            }
+        }
 
         locationPermissionRequest.launch(arrayOf(
                 Manifest.permission.ACCESS_FINE_LOCATION,

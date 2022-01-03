@@ -31,10 +31,6 @@ class SearchResultsActivity : BaseActivity<SearchViewModel>() {
 
         model = ViewModelProvider(this)[SearchViewModel::class.java]
 
-        val searchResultsAdapter = SearchResultsAdapter { searchResult -> adapterOnClick(searchResult) }
-        val searchResultsView: RecyclerView = findViewById(R.id.search_results_view)
-        searchResultsView.adapter = searchResultsAdapter
-
         val progressBar: ProgressBar = findViewById(R.id.search_progress_bar)
 
         val bundle = intent.extras
@@ -51,14 +47,26 @@ class SearchResultsActivity : BaseActivity<SearchViewModel>() {
                 && lat != null && lon != null) {
                 val beginDateTime = Date(beginDateTimeMillis)
                 val endDateTime = Date(endDateTimeMillis)
+                val pos = GeoPos(lon, lat)
+
+                val searchResultsAdapter = SearchResultsAdapter({ searchResult -> adapterOnClick(searchResult) }, model!!, pos)
+                val searchResultsView: RecyclerView = findViewById(R.id.search_results_view)
+                searchResultsView.adapter = searchResultsAdapter
 
                 model?.search(
                     "",
                     beginDateTime,
                     endDateTime,
                     vehicleClasses,
-                    GeoPos(lon, lat)
+                    pos
                 )
+
+                model?.getSearchResults()?.observe(this, {searchResults ->
+                    val sortedResults = model?.sortResultsByDistance(searchResults, pos)
+
+                    searchResultsAdapter.submitList(sortedResults)
+                    progressBar.visibility = View.INVISIBLE
+                })
             } else {
                 Toast
                     .makeText(this, R.string.invalid_search_parameters, Toast.LENGTH_LONG)
@@ -67,11 +75,6 @@ class SearchResultsActivity : BaseActivity<SearchViewModel>() {
                 startActivity(intent)
             }
         }
-
-        model?.getSearchResults()?.observe(this, {searchResults ->
-            searchResultsAdapter.submitList(searchResults)
-            progressBar.visibility = View.INVISIBLE
-        })
     }
 
     private fun adapterOnClick(searchResult: SearchResult) {

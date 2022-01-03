@@ -65,4 +65,5 @@
     <string name="edit_location_title">Edit location</string>
     <string name="manual_location_warning">Please manually enter a location</string>
     <string name="location_not_found">No location found</string>
+    <string name="station_distance">%d m</string>
 </resources>

@@ -22,11 +22,7 @@ class SearchViewModel(application: Application) : BaseViewModel(application), Lo
     private var locationManager: LocationManager? = null
     private var locationFound: Boolean = false
 
-    private val location: MutableLiveData<GeoPos> by lazy {
-        MutableLiveData<GeoPos>().also {
-            updateLocation()
-        }
-    }
+    private val location: MutableLiveData<GeoPos> = MutableLiveData()
     private val geocode: MutableLiveData<String> = MutableLiveData()
 
     fun search(
@@ -65,7 +61,7 @@ class SearchViewModel(application: Application) : BaseViewModel(application), Lo
         return location
     }
 
-    private fun updateLocation() {
+    fun updateLocation() {
         locationManager =
             getApplication<Application>().getSystemService(AppCompatActivity.LOCATION_SERVICE)
                     as LocationManager
@@ -163,5 +159,21 @@ class SearchViewModel(application: Application) : BaseViewModel(application), Lo
                     .resources.getString(R.string.location_not_found)))
             }
         }
+    }
+
+    fun getDistance(pos: GeoPos, searchResult: SearchResult): Float {
+        val ownLocation = Location("")
+        ownLocation.latitude = pos.lat.toDouble()
+        ownLocation.longitude = pos.lon.toDouble()
+
+        val stationLocation = Location("")
+        stationLocation.latitude = searchResult.startingPoint.geoPos.lat.toDouble()
+        stationLocation.longitude = searchResult.startingPoint.geoPos.lon.toDouble()
+
+        return ownLocation.distanceTo(stationLocation)
+    }
+
+    fun sortResultsByDistance(results: List<SearchResult>, geoPos: GeoPos): List<SearchResult> {
+        return results.sortedBy { getDistance(geoPos, it) }
     }
 }
