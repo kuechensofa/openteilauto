@@ -1,4 +1,4 @@
-package de.openteilauto.openteilauto.api
+package de.openteilauto.openteilauto.api.teilauto
 
 import android.content.Context
 import android.text.TextUtils
@@ -7,8 +7,6 @@ import okhttp3.Cookie
 import okhttp3.CookieJar
 import okhttp3.HttpUrl
 import java.io.*
-import java.util.*
-import kotlin.experimental.and
 
 class SerializableCookie(private var cookie: Cookie) : Serializable {
     private val serialVersionUID = 2532101328282342578L

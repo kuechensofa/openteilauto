@@ -5,7 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import de.openteilauto.openteilauto.api.TeilautoApi
+import de.openteilauto.openteilauto.api.teilauto.TeilautoApi
 import de.openteilauto.openteilauto.model.AppError
 import de.openteilauto.openteilauto.model.NetworkTeilautoDataSource
 import de.openteilauto.openteilauto.model.TeilautoRepository

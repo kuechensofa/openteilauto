@@ -6,6 +6,7 @@ import android.location.*
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.*
+import de.openteilauto.openteilauto.api.nominatim.NominatimApi
 import de.openteilauto.openteilauto.model.*
 import de.openteilauto.openteilauto.ui.BaseViewModel
 import kotlinx.coroutines.launch
@@ -19,7 +20,7 @@ class SearchViewModel(application: Application) : BaseViewModel(application), Lo
             updateLocation()
         }
     }
-    private val geocode: MutableLiveData<Address> = MutableLiveData()
+    private val geocode: MutableLiveData<String> = MutableLiveData()
 
     fun search(
         address: String,
@@ -96,18 +97,14 @@ class SearchViewModel(application: Application) : BaseViewModel(application), Lo
 
     private fun updateGeocode(location: Location) {
         viewModelScope.launch {
-            val geocoder = Geocoder(getApplication())
-            val geocodes = geocoder
-                .getFromLocation(location.latitude, location.longitude, 1)
-            Log.d(this.javaClass.name, geocodes.toString())
-
-            if (geocodes.size == 1) {
-                geocode.postValue(geocodes[0])
-            }
+            val nominatimApi = NominatimApi.getInstance()
+            val geoResponse = nominatimApi.reverse(location.latitude.toString(), location.longitude.toString())
+            Log.d(this@SearchViewModel.javaClass.name, geoResponse.toString())
+            geocode.postValue(geoResponse.displayName)
         }
     }
 
-    fun getGeocode(): LiveData<Address> {
+    fun getGeocode(): LiveData<String> {
         return geocode
     }
 }

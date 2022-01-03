@@ -1,7 +1,7 @@
 package de.openteilauto.openteilauto.model
 
 import android.os.Parcelable
-import de.openteilauto.openteilauto.api.SearchData
+import de.openteilauto.openteilauto.api.teilauto.SearchData
 import kotlinx.parcelize.Parcelize
 import java.util.*
 

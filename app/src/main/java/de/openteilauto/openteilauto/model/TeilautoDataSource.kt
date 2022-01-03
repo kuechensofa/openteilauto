@@ -2,8 +2,8 @@ package de.openteilauto.openteilauto.model
 
 import android.content.Context
 import de.openteilauto.openteilauto.R
-import de.openteilauto.openteilauto.api.SearchData
-import de.openteilauto.openteilauto.api.TeilautoApi
+import de.openteilauto.openteilauto.api.teilauto.SearchData
+import de.openteilauto.openteilauto.api.teilauto.TeilautoApi
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
 import java.util.*
@@ -289,7 +289,7 @@ class NetworkTeilautoDataSource(private val context: Context) : TeilautoDataSour
         }
     }
 
-    private fun transformBookings(receivedBookings: List<de.openteilauto.openteilauto.api.Booking?>)
+    private fun transformBookings(receivedBookings: List<de.openteilauto.openteilauto.api.teilauto.Booking?>)
         : List<Booking> {
         val bookings = mutableListOf<Booking>()
         for (receivedBooking in receivedBookings) {

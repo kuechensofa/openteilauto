@@ -9,7 +9,7 @@ data class GeoPos(
     val lat: String
 ): Parcelable {
     companion object {
-        fun fromReceivedGeoPos(receivedGeoPos: de.openteilauto.openteilauto.api.GeoPos): GeoPos {
+        fun fromReceivedGeoPos(receivedGeoPos: de.openteilauto.openteilauto.api.teilauto.GeoPos): GeoPos {
             return GeoPos(receivedGeoPos.lon, receivedGeoPos.lat)
         }
     }

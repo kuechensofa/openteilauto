@@ -15,7 +15,7 @@ data class Booking(
     val destination: Station
 ) {
     companion object {
-        fun fromReceivedBooking(receivedBooking: de.openteilauto.openteilauto.api.Booking): Booking {
+        fun fromReceivedBooking(receivedBooking: de.openteilauto.openteilauto.api.teilauto.Booking): Booking {
             val begin = Date(receivedBooking.begin * 1000)
             val end = Date(receivedBooking.end * 1000)
             val vehicle = Vehicle.fromReceivedVehicle(receivedBooking.vehicle)
@@ -55,7 +55,7 @@ data class Vehicle(
     val vehiclePoolUID: String?
 ): Parcelable {
     companion object {
-        fun fromReceivedVehicle(receivedVehicle: de.openteilauto.openteilauto.api.Vehicle): Vehicle {
+        fun fromReceivedVehicle(receivedVehicle: de.openteilauto.openteilauto.api.teilauto.Vehicle): Vehicle {
             val station = Station.fromReceivedStation(receivedVehicle.station)
             val imageUrl = Uri.parse(receivedVehicle.imagePath)
             val uid = receivedVehicle.vehicleUID ?: receivedVehicle.poolUID
@@ -83,7 +83,7 @@ data class Station(
     val geoPos: GeoPos
 ): Parcelable {
     companion object {
-        fun fromReceivedStation(receivedStation: de.openteilauto.openteilauto.api.Station): Station {
+        fun fromReceivedStation(receivedStation: de.openteilauto.openteilauto.api.teilauto.Station): Station {
             val stationGeoPos = GeoPos.fromReceivedGeoPos(receivedStation.geoPos)
             return Station(receivedStation.uid, receivedStation.name,
                 receivedStation.shorthand, receivedStation.hasFixedParking,
@@ -100,7 +100,7 @@ data class PetrolCard(
     val cardUID: String
 ) {
     companion object {
-        fun fromReceivedPetrolCard(receivedPetrolCard: de.openteilauto.openteilauto.api.PetrolCard): PetrolCard {
+        fun fromReceivedPetrolCard(receivedPetrolCard: de.openteilauto.openteilauto.api.teilauto.PetrolCard): PetrolCard {
             return PetrolCard(receivedPetrolCard.uid, receivedPetrolCard.number,
                 receivedPetrolCard.pin, receivedPetrolCard.description,
                 receivedPetrolCard.cardUID)

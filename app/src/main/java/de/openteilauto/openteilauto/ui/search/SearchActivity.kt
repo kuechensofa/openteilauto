@@ -69,8 +69,8 @@ class SearchActivity : BaseActivity<SearchViewModel>() {
         }
 
         val addressTextView = findViewById<TextView>(R.id.address_text_view)
-        model?.getGeocode()?.observe(this, { address ->
-            addressTextView.text = address.getAddressLine(0)
+        model?.getGeocode()?.observe(this, { geocode ->
+            addressTextView.text = geocode
         })
 
         locationPermissionRequest.launch(arrayOf(

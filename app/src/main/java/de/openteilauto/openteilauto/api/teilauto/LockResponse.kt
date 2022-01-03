@@ -1,4 +1,4 @@
-package de.openteilauto.openteilauto.api
+package de.openteilauto.openteilauto.api.teilauto
 
 data class LockResponse(
     val lockVehicle: LockVehicle?,

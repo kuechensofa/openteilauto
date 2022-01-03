@@ -1,4 +1,4 @@
-package de.openteilauto.openteilauto.api
+package de.openteilauto.openteilauto.api.teilauto
 
 import android.content.Context
 import com.squareup.moshi.Moshi
