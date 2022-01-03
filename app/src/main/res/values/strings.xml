@@ -59,4 +59,5 @@
     <string name="cancel_booking_button">Cancel Booking</string>
     <string name="cancel_booking_message">Do you want to cancel your booking?</string>
     <string name="cancel_booking_title">Cancel Booking</string>
+    <string name="invalid_search_parameters">Invalid search parameters</string>
 </resources>

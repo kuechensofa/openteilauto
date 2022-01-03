@@ -1,6 +1,10 @@
 package de.openteilauto.openteilauto.model
 
-enum class VehicleClass(val classCode: Int) {
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+enum class VehicleClass(val classCode: Int): Parcelable {
     MINI(24),
     SMALL(25),
     DELIVERY_VAN(26),

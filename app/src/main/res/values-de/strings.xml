@@ -60,4 +60,5 @@
     <string name="cancel_booking_button">Buchung stornieren</string>
     <string name="cancel_booking_message">Willst du deine Buchung stornieren?</string>
     <string name="cancel_booking_title">Buchung stornieren</string>
+    <string name="invalid_search_parameters">Ungültige Suchparameter</string>
 </resources>

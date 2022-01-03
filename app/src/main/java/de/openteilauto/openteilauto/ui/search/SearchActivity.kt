@@ -105,34 +105,17 @@ class SearchActivity : BaseActivity<SearchViewModel>() {
             }
 
             if (location != null) {
-                val geoPos = GeoPos(location!!.longitude.toString(), location!!.latitude.toString())
-
-                model?.search(
-                    "",
-                    beginDateTime,
-                    endDateTime,
-                    getSelectedVehicleClasses(),
-                    geoPos
-                )
+                val intent = Intent(this, SearchResultsActivity::class.java)
+                intent.putExtra(BEGIN_DATE_TIME, beginDateTime.time)
+                intent.putExtra(END_DATE_TIME, endDateTime.time)
+                intent.putExtra(VEHICLE_CLASSES, getSelectedVehicleClasses().toTypedArray())
+                intent.putExtra(LATITUDE, location?.latitude.toString())
+                intent.putExtra(LONGITUDE, location?.longitude.toString())
+                startActivity(intent)
             } else {
                 Toast.makeText(this, R.string.location_required, Toast.LENGTH_LONG).show()
             }
         }
-
-        model?.getSearchResults()?.observe(this, { searchResults ->
-            if (searchResults != null) {
-                val intent = Intent(this, SearchResultsActivity::class.java)
-                intent.putExtra(SEARCH_RESULTS, searchResults.toTypedArray())
-                startActivity(intent)
-            }
-        })
-
-        model?.isNotLoggedIn()?.observe(this, {
-            if (it) {
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-            }
-        })
 
         model?.getError()?.observe(this, { error ->
             if (error != null) {

@@ -13,13 +13,14 @@ data class ReverseGeoResponse(
 )
 
 data class Address(
-    @Json(name = "house_number") val houseNumber: String,
-    val road: String,
-    val suburb: String,
-    @Json(name = "city_district") val cityDistrict: String,
-    val city: String,
-    val state: String,
-    val postcode: String,
-    val country: String,
-    @Json(name = "country_code") val countryCode: String
+    val building: String?,
+    @Json(name = "house_number") val houseNumber: String?,
+    val road: String?,
+    val suburb: String?,
+    @Json(name = "city_district") val cityDistrict: String?,
+    val city: String?,
+    val state: String?,
+    val postcode: String?,
+    val country: String?,
+    @Json(name = "country_code") val countryCode: String?
 )
