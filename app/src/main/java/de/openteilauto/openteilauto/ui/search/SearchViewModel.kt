@@ -11,8 +11,6 @@ import de.openteilauto.openteilauto.ui.BaseViewModel
 import kotlinx.coroutines.launch
 import java.util.*
 
-private const val TAG = "SearchViewModel"
-
 class SearchViewModel(application: Application) : BaseViewModel(application), LocationListener {
     private val searchResults: MutableLiveData<List<SearchResult>> = MutableLiveData()
 
@@ -67,6 +65,9 @@ class SearchViewModel(application: Application) : BaseViewModel(application), Lo
 
         viewModelScope.launch {
             if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                val lastLocation = locationManager
+                    .getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                location.postValue(lastLocation)
                 locationManager.requestLocationUpdates(
                     LocationManager.GPS_PROVIDER,
                     1000,
@@ -74,6 +75,9 @@ class SearchViewModel(application: Application) : BaseViewModel(application), Lo
                     this@SearchViewModel
                 )
             } else {
+                val lastLocation = locationManager
+                    .getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                location.postValue(lastLocation)
                 locationManager.requestLocationUpdates(
                     LocationManager.NETWORK_PROVIDER,
                     1000,
@@ -86,13 +90,16 @@ class SearchViewModel(application: Application) : BaseViewModel(application), Lo
 
     override fun onLocationChanged(location: Location) {
         this.location.postValue(location)
-        Log.d(TAG, location.toString())
+        updateGeocode(location)
+        Log.d(this.javaClass.name, location.toString())
     }
 
-    fun requestGeocode(location: Location) {
+    private fun updateGeocode(location: Location) {
         viewModelScope.launch {
             val geocoder = Geocoder(getApplication())
-            val geocodes = geocoder.getFromLocation(location.latitude, location.longitude, 1)
+            val geocodes = geocoder
+                .getFromLocation(location.latitude, location.longitude, 1)
+            Log.d(this.javaClass.name, geocodes.toString())
 
             if (geocodes.size == 1) {
                 geocode.postValue(geocodes[0])

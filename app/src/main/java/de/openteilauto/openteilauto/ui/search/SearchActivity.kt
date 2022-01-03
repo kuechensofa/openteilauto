@@ -53,14 +53,12 @@ class SearchActivity : BaseActivity<SearchViewModel>() {
                     Log.d(TAG, "Fine location access granted")
                     model?.getLocation()?.observe(this, { newLocation ->
                         location = newLocation
-                        model?.requestGeocode(newLocation)
                     })
                 }
                 permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
                     Log.d(TAG, "Coarse location access granted")
                     model?.getLocation()?.observe(this, { newLocation ->
                         location = newLocation
-                        model?.requestGeocode(newLocation)
                     })
                 }
                 else -> {
