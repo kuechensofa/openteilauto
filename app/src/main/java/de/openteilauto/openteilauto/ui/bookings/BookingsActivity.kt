@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -40,14 +42,18 @@ class BookingsActivity : BaseActivity<BookingsViewModel>() {
             startSearchActivity()
         }
 
+        val progressBar: ProgressBar = findViewById(R.id.bookings_progress_bar)
+
         model?.getBookings()?.observe(this, { bookings ->
             swipeRefreshLayout.isRefreshing = false
+            progressBar.visibility = View.INVISIBLE
             bookingsAdapter.submitList(bookings)
         })
 
         model?.isNotLoggedIn()?.observe(this, { notLoggedIn ->
             if (notLoggedIn) {
                 swipeRefreshLayout.isRefreshing = false
+                progressBar.visibility = View.INVISIBLE
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
             }
@@ -56,6 +62,7 @@ class BookingsActivity : BaseActivity<BookingsViewModel>() {
         model?.getError()?.observe(this, { error ->
             if (error != null) {
                 swipeRefreshLayout.isRefreshing = false
+                progressBar.visibility = View.INVISIBLE
                 Toast.makeText(this, error.message, Toast.LENGTH_LONG).show()
             }
         })

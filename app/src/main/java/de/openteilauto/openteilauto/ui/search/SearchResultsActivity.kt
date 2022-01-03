@@ -2,6 +2,8 @@ package de.openteilauto.openteilauto.ui.search
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.ProgressBar
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -32,6 +34,8 @@ class SearchResultsActivity : BaseActivity<SearchViewModel>() {
         val searchResultsAdapter = SearchResultsAdapter { searchResult -> adapterOnClick(searchResult) }
         val searchResultsView: RecyclerView = findViewById(R.id.search_results_view)
         searchResultsView.adapter = searchResultsAdapter
+
+        val progressBar: ProgressBar = findViewById(R.id.search_progress_bar)
 
         val bundle = intent.extras
         if (bundle != null) {
@@ -66,6 +70,7 @@ class SearchResultsActivity : BaseActivity<SearchViewModel>() {
 
         model?.getSearchResults()?.observe(this, {searchResults ->
             searchResultsAdapter.submitList(searchResults)
+            progressBar.visibility = View.INVISIBLE
         })
     }
 

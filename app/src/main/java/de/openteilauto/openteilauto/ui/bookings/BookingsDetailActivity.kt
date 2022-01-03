@@ -4,10 +4,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -45,6 +42,8 @@ class BookingsDetailActivity : BaseActivity<BookingsDetailViewModel>() {
         val lockButton = findViewById<Button>(R.id.button_lock)
         val cancelButton = findViewById<Button>(R.id.button_cancel_booking)
 
+        val progressBar: ProgressBar = findViewById(R.id.booking_progress_bar)
+
         unlockButton.setOnClickListener {
             showPinDialog(it)
         }
@@ -74,6 +73,8 @@ class BookingsDetailActivity : BaseActivity<BookingsDetailViewModel>() {
                     unlockButton.visibility = View.INVISIBLE
                     lockButton.visibility = View.INVISIBLE
                 }
+
+                progressBar.visibility = View.INVISIBLE
                 refreshLayout.isRefreshing = false
             })
 
