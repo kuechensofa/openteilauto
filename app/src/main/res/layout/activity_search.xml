@@ -11,15 +11,14 @@
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:ems="10"
         android:hint="@string/search_begin_date_hint"
         android:importantForAutofill="no"
         android:inputType="date"
+        app:layout_constraintBaseline_toBaselineOf="@+id/begin_time_edit"
         app:layout_constraintEnd_toStartOf="@+id/begin_time_edit"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/address_text_view" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/end_date_edit"
@@ -59,7 +58,7 @@
         android:inputType="time"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/begin_date_edit"
-        app:layout_constraintTop_toBottomOf="@+id/address_text_view" />
+        app:layout_constraintTop_toBottomOf="@+id/button_edit_location" />
 
     <EditText
         android:id="@+id/end_time_edit"
@@ -81,18 +80,19 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:text="@string/location_unknown"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/button_edit_location"
+        app:layout_constraintEnd_toStartOf="@+id/button_edit_location"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chipGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/end_date_edit">
@@ -153,5 +153,15 @@
             android:checkable="true"
             android:text="@string/chip_bus_text" />
     </com.google.android.material.chip.ChipGroup>
+
+    <Button
+        android:id="@+id/button_edit_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/button_edit_location"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

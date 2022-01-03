@@ -1,6 +1,7 @@
 package de.openteilauto.openteilauto.ui.search
 
 import android.Manifest
+import android.content.DialogInterface
 import android.content.Intent
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.chip.Chip
 import de.openteilauto.openteilauto.R
@@ -42,31 +44,34 @@ class SearchActivity : BaseActivity<SearchViewModel>() {
 
         model = ViewModelProvider(this)[SearchViewModel::class.java]
 
+        val editLocationButton: Button = findViewById(R.id.button_edit_location)
+        editLocationButton.setOnClickListener {
+            editLocation()
+        }
+
         val dateTimeFormat = SimpleDateFormat("HH:mm dd.MM.yyyy")
 
-        var location: Location? = null
+        var location: GeoPos? = null
         val locationPermissionRequest = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
         ) { permissions ->
             when {
                 permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
                     Log.d(TAG, "Fine location access granted")
-                    model?.getLocation()?.observe(this, { newLocation ->
-                        location = newLocation
-                    })
                 }
                 permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
                     Log.d(TAG, "Coarse location access granted")
-                    model?.getLocation()?.observe(this, { newLocation ->
-                        location = newLocation
-                    })
                 }
                 else -> {
-                    Toast.makeText(this, R.string.location_required, Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, R.string.manual_location_warning, Toast.LENGTH_LONG).show()
                     Log.d(TAG, "No location permission granted")
                 }
             }
         }
+
+        model?.getLocation()?.observe(this, { newLocation ->
+            location = newLocation
+        })
 
         val addressTextView = findViewById<TextView>(R.id.address_text_view)
         model?.getGeocode()?.observe(this, { geocode ->
@@ -109,8 +114,8 @@ class SearchActivity : BaseActivity<SearchViewModel>() {
                 intent.putExtra(BEGIN_DATE_TIME, beginDateTime.time)
                 intent.putExtra(END_DATE_TIME, endDateTime.time)
                 intent.putExtra(VEHICLE_CLASSES, getSelectedVehicleClasses().toTypedArray())
-                intent.putExtra(LATITUDE, location?.latitude.toString())
-                intent.putExtra(LONGITUDE, location?.longitude.toString())
+                intent.putExtra(LATITUDE, location?.lat)
+                intent.putExtra(LONGITUDE, location?.lon)
                 startActivity(intent)
             } else {
                 Toast.makeText(this, R.string.location_required, Toast.LENGTH_LONG).show()
@@ -193,5 +198,30 @@ class SearchActivity : BaseActivity<SearchViewModel>() {
         }
 
         return selectedVehicleClasses.toList()
+    }
+
+    private fun editLocation() {
+        // show address dialog
+        val builder: AlertDialog.Builder = this.let {
+            AlertDialog.Builder(it)
+        }
+        val dialogView = layoutInflater.inflate(R.layout.dialog_location, null)
+        builder.apply {
+            setView(dialogView)
+            setPositiveButton(R.string.ok,
+                DialogInterface.OnClickListener { dialog, id ->
+                    val addressEdit: EditText = dialogView.findViewById(R.id.address_edit)
+                    model?.locationByAddress(addressEdit.text.toString())
+                })
+            setNegativeButton(R.string.cancel,
+                DialogInterface.OnClickListener { dialog, id ->
+
+                })
+        }
+        builder.setMessage(R.string.edit_location_message)
+            .setTitle(R.string.edit_location_title)
+
+        val dialog = builder.create()
+        dialog.show()
     }
 }

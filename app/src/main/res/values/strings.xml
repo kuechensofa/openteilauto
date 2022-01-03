@@ -60,4 +60,9 @@
     <string name="cancel_booking_message">Do you want to cancel your booking?</string>
     <string name="cancel_booking_title">Cancel Booking</string>
     <string name="invalid_search_parameters">Invalid search parameters</string>
+    <string name="button_edit_location">Edit</string>
+    <string name="edit_location_message">Input a location address</string>
+    <string name="edit_location_title">Edit location</string>
+    <string name="manual_location_warning">Please manually enter a location</string>
+    <string name="location_not_found">No location found</string>
 </resources>

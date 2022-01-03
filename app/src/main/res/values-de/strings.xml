@@ -61,4 +61,9 @@
     <string name="cancel_booking_message">Willst du deine Buchung stornieren?</string>
     <string name="cancel_booking_title">Buchung stornieren</string>
     <string name="invalid_search_parameters">Ungültige Suchparameter</string>
+    <string name="button_edit_location">Bearbeiten</string>
+    <string name="edit_location_message">Gib eine Adresse ein</string>
+    <string name="edit_location_title">Standort bearbeiten</string>
+    <string name="manual_location_warning">Bitte gib manuell einen Standort an</string>
+    <string name="location_not_found">Keinen Standort gefunden</string>
 </resources>
