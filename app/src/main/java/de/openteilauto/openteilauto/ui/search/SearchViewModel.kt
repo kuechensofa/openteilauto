@@ -84,34 +84,42 @@ class SearchViewModel(application: Application) : BaseViewModel(application), Lo
                     val lastLocation = locationManager?.getLastKnownLocation(
                         LocationManager.GPS_PROVIDER
                     )
-                    val lastPos = GeoPos(
-                        lastLocation?.longitude.toString(),
-                        lastLocation?.latitude.toString()
-                    )
-                    location.postValue(lastPos)
+
                     locationManager?.requestLocationUpdates(
                         LocationManager.GPS_PROVIDER,
                         1000,
                         10f,
                         this@SearchViewModel
                     )
-                    updateGeocode(lastPos)
+
+                    if (lastLocation != null) {
+                        val lastPos = GeoPos(
+                            lastLocation.longitude.toString(),
+                            lastLocation.latitude.toString()
+                        )
+                        location.postValue(lastPos)
+                        updateGeocode(lastPos)
+                    }
                 } else {
                     val lastLocation = locationManager?.getLastKnownLocation(
                         LocationManager.GPS_PROVIDER
                     )
-                    val lastPos = GeoPos(
-                        lastLocation?.longitude.toString(),
-                        lastLocation?.latitude.toString()
-                    )
-                    location.postValue(lastPos)
+
                     locationManager?.requestLocationUpdates(
                         LocationManager.NETWORK_PROVIDER,
                         1000,
                         10f,
                         this@SearchViewModel
                     )
-                    updateGeocode(lastPos)
+
+                    if (lastLocation != null) {
+                        val lastPos = GeoPos(
+                            lastLocation.longitude.toString(),
+                            lastLocation.latitude.toString()
+                        )
+                        location.postValue(lastPos)
+                        updateGeocode(lastPos)
+                    }
                 }
                 locationFound = true
             }

@@ -66,4 +66,10 @@
     <string name="manual_location_warning">Please manually enter a location</string>
     <string name="location_not_found">No location found</string>
     <string name="station_distance">%d m</string>
+    <string name="select_begin_date">Select start date</string>
+    <string name="select_begin_time">Select start time</string>
+    <string name="select_end_date">Select end date</string>
+    <string name="select_end_time">Select end time</string>
+    <string name="date_format">yyyy-MM-dd</string>
+    <string name="time_format">HH:mm</string>
 </resources>
